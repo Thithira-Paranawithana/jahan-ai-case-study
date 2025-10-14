@@ -5,9 +5,6 @@ import {JetApp, EmptyRouter, HashRouter, plugins } from "webix-jet";
 const modules = import.meta.glob("./views/**/*.js");
 const views = name => modules[`./views/${name}.js`]().then(x => x.default);
 
-// locales, optional
-// const locales = import.meta.glob("./locales/*.js");
-// const words = name => locales[`./locales/${name}.js`]().then(x => x.default);
 
 export default class MyApp extends JetApp{
 	constructor(config){
@@ -23,11 +20,6 @@ export default class MyApp extends JetApp{
 
 		super({ ...defaults, ...config });
 
-		// locales plugin, optional
-		// this.use(plugins.Locale, {
-		// 	path: words,
-		// 	storage: this.webix.storage.session
-		// });
 	}
 }
 
