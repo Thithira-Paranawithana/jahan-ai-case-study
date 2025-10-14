@@ -1,35 +1,47 @@
-import {JetView, plugins} from "webix-jet";
-
-
+import {JetView} from "webix-jet";
+import authService from "../services/auth";
 
 export default class TopView extends JetView{
-config(){
-    var header = {
-        type:"header", template:this.app.config.name, css:"webix_header app_header"
-    };
+	config(){
+		const user = authService.getCurrentUser();
+		
+		var toolbar = {
+			view:"toolbar",
+			height: 60,
+			cols:[
+				{
+					view:"label",
+					label:"⚙️ User Preferences",
+					css:"app_title"
+				},
+				{},
+				{
+					view:"label",
+					label: user ? user.fullName : "Guest",
+					width: 150
+				},
+				{
+					view:"button",
+					value:"Logout",
+					width:100,
+					click: () => this.doLogout()
+				}
+			]
+		};
 
-    var menu = {
-        view:"menu", id:"top:menu", 
-        css:"app_menu",
-        width:180, layout:"y", select:true,
-        template:"<span class='webix_icon #icon#'></span> #value# ",
-        data:[
-            { value:"Settings", id:"settings", icon:"wxi-settings" }
-        ]
-    };
+		var ui = {
+			rows:[
+				toolbar,
+				{ $subview:true }
+			]
+		};
 
-    var ui = {
-        type:"clean", paddingX:5, css:"app_layout", cols:[
-            {  paddingX:5, paddingY:10, rows: [ {css:"webix_shadow_medium", rows:[header, menu]} ]},
-            { type:"wide", paddingY:10, paddingX:5, rows:[
-                { $subview:true } 
-            ]}
-        ]
-    };
-
-    return ui;
-}
-	init(){
-		this.use(plugins.Menu, "top:menu");
+		return ui;
+	}
+	
+	doLogout() {
+		authService.logout();
+		webix.message({ type: "success", text: "Logged out successfully" });
+		this.show("/login");
 	}
 }
