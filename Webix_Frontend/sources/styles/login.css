@@ -1,0 +1,303 @@
+/* Login Layout - Two Column Structure */
+.login_layout {
+    height: 100vh;
+    background: #f5f7fa;
+}
+
+.login_left_panel {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+}
+
+.brand_section {
+    max-width: 450px;
+}
+
+.brand_logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 15px;
+}
+
+.logo_icon {
+    font-size: 48px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.brand_logo h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+}
+
+.brand_content h3 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    line-height: 1.3;
+}
+
+.brand_content p {
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 0.95;
+    margin-bottom: 30px;
+}
+
+.feature_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature_list li {
+    font-size: 15px;
+    padding: 10px 0;
+    opacity: 0.9;
+}
+
+.login_right_panel {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Login Form Styling */
+.login_header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 8px 0;
+}
+
+.login_header .subtitle {
+    font-size: 15px;
+    color: #718096;
+    margin: 0;
+}
+
+.input_field .webix_inp_static {
+    background: #f7fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+    transition: all 0.2s ease;
+}
+
+.input_field .webix_inp_static:focus {
+    background: white !important;
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+    outline: none !important;
+}
+
+.input_field label {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+/* Remember Me and Forgot Password  */
+.remember_forgot_wrapper {
+    margin: 15px 0 !important;
+}
+
+.remember_forgot_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 2px;
+}
+
+.remember_label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.remember_input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #667eea;
+    margin: 0;
+}
+
+.remember_label span {
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 500;
+    user-select: none;
+}
+
+.forgot-link {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+
+.forgot-link:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}
+
+
+/* Login Button */
+.login_button {
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    background: #667eea !important;
+    transition: all 0.2s ease;
+    border: none !important;
+}
+
+.login_button:hover {
+    background: #5568d3 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+}
+
+.login_button:active {
+    transform: translateY(0);
+}
+
+/* Divider and Sign Up Link */
+.divider_template {
+    text-align: center;
+    position: relative;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #a0aec0;
+    font-size: 13px;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.divider span {
+    padding: 0 15px;
+}
+
+.signup-prompt {
+    color: #718096;
+    font-size: 14px;
+}
+
+.signup-link {
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.signup-link:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}
+
+/* Responsive Design for Login Page */
+@media (max-width: 1024px) {
+    .login_left_panel {
+        padding: 40px;
+    }
+    
+    .brand_content h3 {
+        font-size: 28px;
+    }
+    
+    .login_right_panel {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .login_layout {
+        flex-direction: column !important;
+    }
+    
+    .login_left_panel {
+        display: none !important;
+    }
+    
+    .login_right_panel {
+        padding: 20px;
+        width: 100% !important;
+    }
+    
+    .login_header h1 {
+        font-size: 28px;
+    }
+    
+    #loginForm {
+        width: 100% !important;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login_right_panel {
+        padding: 15px;
+    }
+    
+    .login_header h1 {
+        font-size: 24px;
+    }
+    
+    .login_header .subtitle {
+        font-size: 14px;
+    }
+    
+    #loginForm {
+        width: 100% !important;
+        max-width: 100%;
+    }
+    
+    .input_field .webix_inp_static {
+        font-size: 14px !important;
+    }
+    
+    .login_button {
+        height: 44px !important;
+        font-size: 15px !important;
+    }
+    
+    .remember_checkbox label,
+    .forgot-link {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .brand_section {
+        max-width: 520px;
+    }
+    
+    #loginForm {
+        width: 460px;
+    }
+}

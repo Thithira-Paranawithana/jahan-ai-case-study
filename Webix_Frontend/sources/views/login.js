@@ -1,29 +1,86 @@
 import { JetView } from "webix-jet";
+import "../styles/login.css";
 
 export default class LoginView extends JetView {
 	config() {
 		const loginForm = {
-			view: "form",
-			id: "loginForm",
-			width: 400,
-			borderless: true,
-			margin: 10,
-			rows: [
-				{ type: "header", template: "Welcome Back!", css: "webix_header app_header" },
-				{ view: "text", name: "email", label: "Email", labelPosition: "top", placeholder: "your@email.com" },
-				{ view: "text", type: "password", name: "password", label: "Password", labelPosition: "top", placeholder: "Your password" },
-				{ view: "button", value: "Login", css: "webix_primary", hotkey: "enter", click: () => this.doLogin() },
-				{
-					template: "<a href='#!/register' class='app-link'>Don't have an account? Sign Up</a>",
-					borderless: true,
-					css: "text-center"
-				}
-			],
-			rules: {
-				email: webix.rules.isEmail,
-				password: webix.rules.isNotEmpty
-			}
-		};
+            view: "form",
+            id: "loginForm",
+            borderless: true,
+            width: 420,
+            elements: [
+                { 
+                    view: "template", 
+                    template: "<h1>Welcome Back</h1><p class='subtitle'>Sign in to continue to User Preferences</p>", 
+                    borderless: true,
+                    css: "login_header",
+                    height: 100
+                },
+                { 
+                    view: "text", 
+                    name: "email", 
+                    label: "Email Address", 
+                    labelPosition: "top", 
+                    placeholder: "your@email.com",
+                    css: "input_field"
+                },
+                { 
+                    view: "text", 
+                    type: "password", 
+                    name: "password", 
+                    label: "Password", 
+                    labelPosition: "top", 
+                    placeholder: "Enter your password",
+                    css: "input_field"
+                },
+                {
+                    view: "template",
+                    template: `
+                        <div class="remember_forgot_container">
+                            <label class="remember_label">
+                                <input type="checkbox" id="rememberMe" class="remember_input">
+                                <span>Remember me</span>
+                            </label>
+                            <a href="#" class="forgot-link" onclick="return false;">Forgot Password?</a>
+                        </div>
+                    `,
+                    borderless: true,
+                    height: 35,
+                    css: "remember_forgot_wrapper"
+                },
+                
+                
+                
+                
+                { 
+                    view: "button", 
+                    value: "Sign In", 
+                    css: "webix_primary login_button", 
+                    height: 48,
+                    hotkey: "enter", 
+                    click: () => this.doLogin() 
+                },
+                {
+                    view: "template",
+                    template: "<div class='divider'><span>or</span></div>",
+                    borderless: true,
+                    height: 40,
+                    css: "divider_template"
+                },
+                {
+                    view: "template",
+                    template: "<div class='signup-prompt'>Don't have an account? <a href='#!/register' class='signup-link'>Sign Up</a></div>",
+                    borderless: true,
+                    autoheight: true,
+                    css: "text-center"
+                }
+            ],
+            rules: {
+                email: webix.rules.isEmail,
+                password: webix.rules.isNotEmpty
+            }
+        };
+        
 
 		const leftPanel = {
 			view: "template",
