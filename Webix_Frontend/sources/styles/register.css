@@ -1,0 +1,179 @@
+/* Register Layout  */
+.register_layout {
+    height: 100vh;
+    background: #f5f7fa;
+}
+
+.register_left_panel {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+}
+
+.register_right_panel {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Register Form Header */
+.register_header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 8px 0;
+}
+
+.register_header .subtitle {
+    font-size: 15px;
+    color: #718096;
+    margin: 0;
+}
+
+/* Terms and Conditions */
+.terms_wrapper {
+    margin: 15px 0 !important;
+}
+
+.terms_label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.terms_input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #667eea;
+    margin: 0;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.terms_label span {
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.terms-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.terms-link:hover {
+    text-decoration: underline;
+}
+
+/* Register Button */
+.register_button {
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    background: #667eea !important;
+    transition: all 0.2s ease;
+    border: none !important;
+}
+
+.register_button:hover {
+    background: #5568d3 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+}
+
+.register_button:active {
+    transform: translateY(0);
+}
+
+/* Sign In Link */
+.signin-prompt {
+    color: #718096;
+    font-size: 14px;
+}
+
+.signin-link {
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.signin-link:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}
+
+/* Responsive Design for Register Page */
+@media (max-width: 1024px) {
+    .register_left_panel {
+        padding: 40px;
+    }
+    
+    .register_right_panel {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .register_layout {
+        flex-direction: column !important;
+    }
+    
+    .register_left_panel {
+        display: none !important;
+    }
+    
+    .register_right_panel {
+        padding: 20px;
+        width: 100% !important;
+    }
+    
+    .register_header h1 {
+        font-size: 28px;
+    }
+    
+    #registerForm {
+        width: 100% !important;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .register_right_panel {
+        padding: 15px;
+    }
+    
+    .register_header h1 {
+        font-size: 24px;
+    }
+    
+    .register_header .subtitle {
+        font-size: 14px;
+    }
+    
+    #registerForm {
+        width: 100% !important;
+        max-width: 100%;
+    }
+    
+    .register_button {
+        height: 44px !important;
+        font-size: 15px !important;
+    }
+}
+
+@media (min-width: 1440px) {
+    #registerForm {
+        width: 460px;
+    }
+}

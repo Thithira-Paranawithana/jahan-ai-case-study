@@ -1,21 +1,29 @@
 import { JetView } from "webix-jet";
-import "../styles/login.css";
+import "../styles/register.css";
 import authService from "../services/auth";
 
-export default class LoginView extends JetView {
+export default class RegisterView extends JetView {
 	config() {
-		const loginForm = {
+		const registerForm = {
 			view: "form",
-			id: "loginForm",
+			id: "registerForm",
 			borderless: true,
 			width: 420,
 			elements: [
 				{ 
 					view: "template", 
-					template: "<h1>Welcome Back</h1><p class='subtitle'>Sign in to continue to User Preferences</p>", 
+					template: "<h1>Create Account</h1><p class='subtitle'>Sign up to start managing your preferences</p>", 
 					borderless: true,
-					css: "login_header",
+					css: "register_header",
 					height: 100
+				},
+				{ 
+					view: "text", 
+					name: "fullName", 
+					label: "Full Name", 
+					labelPosition: "top", 
+					placeholder: "John Doe",
+					css: "input_field"
 				},
 				{ 
 					view: "text", 
@@ -23,8 +31,7 @@ export default class LoginView extends JetView {
 					label: "Email Address", 
 					labelPosition: "top", 
 					placeholder: "your@email.com",
-					css: "input_field",
-					value: "john@example.com"  // demo
+					css: "input_field"
 				},
 				{ 
 					view: "text", 
@@ -32,32 +39,37 @@ export default class LoginView extends JetView {
 					name: "password", 
 					label: "Password", 
 					labelPosition: "top", 
-					placeholder: "Enter your password",
-					css: "input_field",
-					value: "password123"  // demo
+					placeholder: "Create a strong password",
+					css: "input_field"
+				},
+				{ 
+					view: "text", 
+					type: "password", 
+					name: "confirmPassword", 
+					label: "Confirm Password", 
+					labelPosition: "top", 
+					placeholder: "Re-enter your password",
+					css: "input_field"
 				},
 				{
 					view: "template",
 					template: `
-						<div class="remember_forgot_container">
-							<label class="remember_label">
-								<input type="checkbox" id="rememberMe" class="remember_input">
-								<span>Remember me</span>
-							</label>
-							<a href="#" class="forgot-link" onclick="return false;">Forgot Password?</a>
-						</div>
+						<label class="terms_label">
+							<input type="checkbox" id="agreeTerms" class="terms_input">
+							<span>I agree to the <a href="#" class="terms-link">Terms & Conditions</a></span>
+						</label>
 					`,
 					borderless: true,
-					height: 35,
-					css: "remember_forgot_wrapper"
+					height: 40,
+					css: "terms_wrapper"
 				},
 				{ 
 					view: "button", 
-					value: "Sign In", 
-					css: "webix_primary login_button", 
+					value: "Create Account", 
+					css: "webix_primary register_button", 
 					height: 48,
 					hotkey: "enter", 
-					click: () => this.doLogin() 
+					click: () => this.doRegister() 
 				},
 				{
 					view: "template",
@@ -68,21 +80,23 @@ export default class LoginView extends JetView {
 				},
 				{
 					view: "template",
-					template: "<div class='signup-prompt'>Don't have an account? <a href='#!/register' class='signup-link'>Sign Up</a></div>",
+					template: "<div class='signin-prompt'>Already have an account? <a href='#!/login' class='signin-link'>Sign In</a></div>",
 					borderless: true,
 					autoheight: true,
 					css: "text-center"
 				}
 			],
 			rules: {
+				fullName: webix.rules.isNotEmpty,
 				email: webix.rules.isEmail,
-				password: webix.rules.isNotEmpty
+				password: webix.rules.isNotEmpty,
+				confirmPassword: webix.rules.isNotEmpty
 			}
 		};
 
 		const leftPanel = {
 			view: "template",
-			css: "login_left_panel",
+			css: "register_left_panel",
 			borderless: true,
 			template: `
 				<div class="brand_section">
@@ -91,7 +105,7 @@ export default class LoginView extends JetView {
 						<h2>User Preferences</h2>
 					</div>
 					<div class="brand_content">
-						<h3>Customize Your Experience</h3>
+						<h3>Join Us Today</h3>
 						<p>Manage your account settings, notifications, themes, and privacy preferences all in one place.</p>
 						<ul class="feature_list">
 							<li>✓ Personalized account settings</li>
@@ -100,7 +114,7 @@ export default class LoginView extends JetView {
 							<li>✓ Advanced privacy options</li>
 						</ul>
 					</div>
-					<div class="demo_credentials">
+                    <div class="demo_credentials">
 						<p><strong>Demo Credentials:</strong></p>
 						<p>Email: john@example.com</p>
 						<p>Password: password123</p>
@@ -110,13 +124,13 @@ export default class LoginView extends JetView {
 		};
 
 		const rightPanel = {
-			css: "login_right_panel",
+			css: "register_right_panel",
 			rows: [
 				{},
 				{
 					cols: [
 						{},
-						loginForm,
+						registerForm,
 						{}
 					]
 				},
@@ -125,7 +139,7 @@ export default class LoginView extends JetView {
 		};
 
 		return {
-			css: "login_layout",
+			css: "register_layout",
 			cols: [
 				leftPanel,
 				rightPanel
@@ -134,36 +148,51 @@ export default class LoginView extends JetView {
 	}
 
 	init() {
-		// Check if already logged in
+		// check if already logged in
 		if (authService.isAuthenticated()) {
 			this.show("/top/settings");
 			return;
 		}
 		
-		this.$$("loginForm").elements.email.focus();
+		this.$$("registerForm").elements.fullName.focus();
 	}
 
-	doLogin() {
-		const form = this.$$("loginForm");
-		
+	doRegister() {
+		const form = this.$$("registerForm");
+		const agreeTerms = document.getElementById("agreeTerms")?.checked;
+
+		if (!agreeTerms) {
+			webix.message({ type: "error", text: "Please agree to the Terms & Conditions" });
+			return;
+		}
+
 		if (!form.validate()) {
 			webix.message({ type: "error", text: "Please fill in all fields correctly" });
 			return;
 		}
-		
+
 		const values = form.getValues();
-		const rememberMe = document.getElementById("rememberMe")?.checked || false;
 		
+		if (values.password !== values.confirmPassword) {
+			webix.message({ type: "error", text: "Passwords do not match" });
+			return;
+		}
+
+		if (values.password.length < 6) {
+			webix.message({ type: "error", text: "Password must be at least 6 characters long" });
+			return;
+		}
+
 		// call auth service
-		const result = authService.login(values.email, values.password, rememberMe);
+		const result = authService.register(values.fullName, values.email, values.password);
 		
 		if (result.success) {
-			webix.message({ type: "success", text: `Welcome back, ${result.user.fullName}!` });
+			webix.message({ type: "success", text: "Account created successfully!" });
 			
 			// redirect to dashboard
 			setTimeout(() => {
 				this.show("/top/settings");
-			}, 500);
+			}, 1000);
 		} else {
 			webix.message({ type: "error", text: result.error });
 		}
