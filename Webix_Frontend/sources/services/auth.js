@@ -1,4 +1,3 @@
-// authentication with dummy user
 
 class AuthService {
 	constructor() {
@@ -32,7 +31,6 @@ class AuthService {
 	}
 
 	register(fullName, email, password) {
-		
 		const newUser = {
 			id: Date.now(),
 			fullName: fullName,
@@ -69,6 +67,22 @@ class AuthService {
 		localStorage.removeItem("currentUser");
 		sessionStorage.removeItem("currentUser");
 		return { success: true };
+	}
+
+	updateProfile(userData) {
+		const currentUser = this.getCurrentUser();
+		if (!currentUser) {
+			return { success: false, error: "Not authenticated" };
+		}
+
+		// Merge new data with existing user data
+		this.currentUser = { ...currentUser, ...userData };
+		
+		// Determine which storage to use
+		const storage = localStorage.getItem("currentUser") ? localStorage : sessionStorage;
+		storage.setItem("currentUser", JSON.stringify(this.currentUser));
+		
+		return { success: true, user: this.currentUser };
 	}
 }
 

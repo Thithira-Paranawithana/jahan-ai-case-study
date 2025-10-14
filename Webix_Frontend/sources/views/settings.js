@@ -4,7 +4,6 @@ import authService from "../services/auth";
 
 export default class SettingsView extends JetView {
 	config() {
-		// check authentication before rendering
 		if (!authService.isAuthenticated()) {
 			this.show("/login");
 			return {};
@@ -25,21 +24,18 @@ export default class SettingsView extends JetView {
 				},
 				{
 					cells: [
-						{
-							id: "account",
-							template: "Account Settings - Coming Soon"
-						},
+						{ id: "account", $subview: "account" },
 						{
 							id: "notifications",
-							template: "Notification Settings - Coming Soon"
+							template: "<div style='padding:30px'>Notification preferences will be configured here.</div>"
 						},
 						{
 							id: "theme",
-							template: "Theme Settings - Coming Soon"
+							template: "<div style='padding:30px'>Theme customization options will be available here.</div>"
 						},
 						{
 							id: "privacy",
-							template: "Privacy Settings - Coming Soon"
+							template: "<div style='padding:30px'>Privacy settings and data management options.</div>"
 						}
 					]
 				}
@@ -48,7 +44,6 @@ export default class SettingsView extends JetView {
 	}
 
 	init() {
-		// double check on init
 		if (!authService.isAuthenticated()) {
 			this.show("/login");
 		}
