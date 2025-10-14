@@ -1,5 +1,6 @@
 import { JetView } from "webix-jet";
 import authService from "../services/auth";
+import { validateUserInfo } from "../helpers/validation";
 
 export default class AccountView extends JetView {
 	config() {
@@ -37,6 +38,14 @@ export default class AccountView extends JetView {
 										value: user?.fullName || "", 
 										labelWidth: 150,
 										disabled: true
+									},
+									{
+										view: "template",
+										id: "fullNameError",
+										template: "",
+										height: 0,
+										borderless: true,
+										css: "error_message"
 									},
 									{ 
 										view: "combo", 
@@ -109,6 +118,14 @@ export default class AccountView extends JetView {
 											}
 										]
 									},
+									{
+										view: "template",
+										id: "phoneError",
+										template: "",
+										height: 0,
+										borderless: true,
+										css: "error_message"
+									},
 									
 									// Personal Details
 									{ height: 20 },
@@ -127,6 +144,14 @@ export default class AccountView extends JetView {
 										format: "%Y-%m-%d",
 										placeholder: "Select date",
 										disabled: true
+									},
+									{
+										view: "template",
+										id: "dateOfBirthError",
+										template: "",
+										height: 0,
+										borderless: true,
+										css: "error_message"
 									},
 									{ 
 										view: "radio", 
@@ -192,10 +217,28 @@ export default class AccountView extends JetView {
 		};
 	}
 	
+	clearErrors() {
+		this.$$("fullNameError").setHTML("");
+		this.$$("fullNameError").config.height = 0;
+		this.$$("phoneError").setHTML("");
+		this.$$("phoneError").config.height = 0;
+		this.$$("dateOfBirthError").setHTML("");
+		this.$$("dateOfBirthError").config.height = 0;
+		this.$$("userInfoForm").resize();
+	}
+	
+	showError(fieldId, message) {
+		const errorTemplate = this.$$(fieldId + "Error");
+		errorTemplate.setHTML(`<span style="color: #e53e3e; font-size: 12px;">${message}</span>`);
+		errorTemplate.config.height = 25;
+		this.$$("userInfoForm").resize();
+	}
+	
 	enableEditMode() {
 		const form = this.$$("userInfoForm");
+		this.clearErrors();
 		
-		// Enable all fields except email
+		// enable all fields except email
 		form.elements.fullName.enable();
 		form.elements.country.enable();
 		form.elements.countryCode.enable();
@@ -203,7 +246,7 @@ export default class AccountView extends JetView {
 		form.elements.dateOfBirth.enable();
 		form.elements.gender.enable();
 		
-		// Toggle buttons
+		// toggle buttons
 		this.$$("viewModeButtons").hide();
 		this.$$("editModeButtons").show();
 		
@@ -213,8 +256,9 @@ export default class AccountView extends JetView {
 	cancelEdit() {
 		const user = authService.getCurrentUser();
 		const form = this.$$("userInfoForm");
+		this.clearErrors();
 		
-		// Reset form to original values
+		// reset form to original values
 		form.setValues({
 			fullName: user?.fullName || "",
 			country: user?.country || "",
@@ -225,7 +269,7 @@ export default class AccountView extends JetView {
 			gender: user?.gender || "prefer_not_to_say"
 		});
 		
-		// Disable all fields
+		// disable all fields
 		form.elements.fullName.disable();
 		form.elements.country.disable();
 		form.elements.countryCode.disable();
@@ -233,7 +277,7 @@ export default class AccountView extends JetView {
 		form.elements.dateOfBirth.disable();
 		form.elements.gender.disable();
 		
-		// Toggle buttons
+		// toggle buttons
 		this.$$("editModeButtons").hide();
 		this.$$("viewModeButtons").show();
 		
@@ -241,26 +285,56 @@ export default class AccountView extends JetView {
 	}
 	
 	saveUserInfo() {
-		const form = this.$$("userInfoForm");
-		const values = form.getValues();
-		
-		// Update auth service
-		const result = authService.updateProfile(values);
-		
-		// Disable all fields
-		form.elements.fullName.disable();
-		form.elements.country.disable();
-		form.elements.countryCode.disable();
-		form.elements.phone.disable();
-		form.elements.dateOfBirth.disable();
-		form.elements.gender.disable();
-		
-		// Toggle buttons
-		this.$$("editModeButtons").hide();
-		this.$$("viewModeButtons").show();
-		
-		webix.message({ type: "success", text: "Profile updated successfully" });
-	}
+        const form = this.$$("userInfoForm");
+        const values = form.getValues();
+        
+        // clear previous errors
+        this.clearErrors();
+        
+        // validate form
+        const validation = validateUserInfo(values);
+        
+        if (!validation.valid) {
+            // show errors
+            validation.errors.forEach(error => {
+                this.showError(error.field, error.message);
+            });
+            webix.message({ type: "error", text: "Please fix the errors before saving" });
+            return;
+        }
+        
+        // update auth service
+        const result = authService.updateProfile(values);
+        
+        if (result && result.success) {
+            // disable all fields
+            form.elements.fullName.disable();
+            form.elements.country.disable();
+            form.elements.countryCode.disable();
+            form.elements.phone.disable();
+            form.elements.dateOfBirth.disable();
+            form.elements.gender.disable();
+            
+            // toggle buttons
+            this.$$("editModeButtons").hide();
+            this.$$("viewModeButtons").show();
+            
+            // show success message 
+            webix.message({ 
+                type: "success", 
+                text: "Profile updated successfully",
+                expire: 3000
+            });
+            
+       
+            console.log("Updated profile data:", result.user);
+            console.log("Storage check:", authService.getCurrentUser());
+            
+        } else {
+            webix.message({ type: "error", text: result.error || "Failed to update profile" });
+        }
+    }
+    
 	
 	openPasswordDialog() {
 		webix.message("Password change dialog will open here");

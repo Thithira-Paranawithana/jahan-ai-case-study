@@ -10,3 +10,17 @@ body {
 	font-weight: bold;
 	padding-left: 15px;
 }
+
+.error_message {
+	padding-left: 150px;
+	margin-top: -10px;
+	margin-bottom: 5px;
+}
+.error_message .webix_inp_static {
+    color: red;
+    font-size: 12px;
+    font-style: italic;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
