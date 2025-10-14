@@ -44,7 +44,7 @@ export default class AccountView extends JetView {
 										name: "country", 
 										value: user?.country || "", 
 										labelWidth: 150,
-										placeholder: "Not set",
+										placeholder: "Select country",
 										disabled: true,
 										options: [
 											"United States",
@@ -77,14 +77,37 @@ export default class AccountView extends JetView {
 										labelWidth: 150,
 										disabled: true
 									},
-									{ 
-										view: "text", 
-										label: "Phone Number", 
-										name: "phone", 
-										value: user?.phone || "", 
-										labelWidth: 150,
-										placeholder: "Not set",
-										disabled: true
+									{
+										cols: [
+											{
+												view: "combo",
+												label: "Phone Number",
+												name: "countryCode",
+												value: user?.countryCode || "+1",
+												labelWidth: 150,
+												width: 300,
+												disabled: true,
+												options: [
+													{ id: "+1", value: "+1 (US/Canada)" },
+													{ id: "+44", value: "+44 (UK)" },
+													{ id: "+61", value: "+61 (Australia)" },
+													{ id: "+49", value: "+49 (Germany)" },
+													{ id: "+33", value: "+33 (France)" },
+													{ id: "+91", value: "+91 (India)" },
+													{ id: "+81", value: "+81 (Japan)" },
+													{ id: "+86", value: "+86 (China)" },
+													{ id: "+55", value: "+55 (Brazil)" },
+													{ id: "+94", value: "+94 (Sri Lanka)" }
+												]
+											},
+											{
+												view: "text",
+												name: "phone",
+												value: user?.phone || "",
+												placeholder: "Enter phone number",
+												disabled: true
+											}
+										]
 									},
 									
 									// Personal Details
@@ -102,7 +125,7 @@ export default class AccountView extends JetView {
 										value: user?.dateOfBirth || "", 
 										labelWidth: 150,
 										format: "%Y-%m-%d",
-										placeholder: "Not set",
+										placeholder: "Select date",
 										disabled: true
 									},
 									{ 
@@ -115,13 +138,13 @@ export default class AccountView extends JetView {
 										options: [
 											{ id: "male", value: "Male" },
 											{ id: "female", value: "Female" },
-											{ id: "other", value: "Other" },
 											{ id: "prefer_not_to_say", value: "Prefer not to say" }
 										]
 									},
 									
 									{ height: 30 },
 									{
+										id: "viewModeButtons",
 										cols: [
 											{},
 											{
@@ -135,7 +158,28 @@ export default class AccountView extends JetView {
 												view: "button",
 												value: "Edit Profile",
 												width: 130,
-												id: "editButton"
+												id: "editButton",
+												click: () => this.enableEditMode()
+											}
+										]
+									},
+									{
+										id: "editModeButtons",
+										hidden: true,
+										cols: [
+											{},
+											{
+												view: "button",
+												value: "Cancel",
+												width: 100,
+												click: () => this.cancelEdit()
+											},
+											{
+												view: "button",
+												value: "Save Changes",
+												width: 130,
+												css: "webix_primary",
+												click: () => this.saveUserInfo()
 											}
 										]
 									}
@@ -146,6 +190,76 @@ export default class AccountView extends JetView {
 				}
 			]
 		};
+	}
+	
+	enableEditMode() {
+		const form = this.$$("userInfoForm");
+		
+		// Enable all fields except email
+		form.elements.fullName.enable();
+		form.elements.country.enable();
+		form.elements.countryCode.enable();
+		form.elements.phone.enable();
+		form.elements.dateOfBirth.enable();
+		form.elements.gender.enable();
+		
+		// Toggle buttons
+		this.$$("viewModeButtons").hide();
+		this.$$("editModeButtons").show();
+		
+		webix.message("Edit mode enabled");
+	}
+	
+	cancelEdit() {
+		const user = authService.getCurrentUser();
+		const form = this.$$("userInfoForm");
+		
+		// Reset form to original values
+		form.setValues({
+			fullName: user?.fullName || "",
+			country: user?.country || "",
+			email: user?.email || "",
+			countryCode: user?.countryCode || "+1",
+			phone: user?.phone || "",
+			dateOfBirth: user?.dateOfBirth || "",
+			gender: user?.gender || "prefer_not_to_say"
+		});
+		
+		// Disable all fields
+		form.elements.fullName.disable();
+		form.elements.country.disable();
+		form.elements.countryCode.disable();
+		form.elements.phone.disable();
+		form.elements.dateOfBirth.disable();
+		form.elements.gender.disable();
+		
+		// Toggle buttons
+		this.$$("editModeButtons").hide();
+		this.$$("viewModeButtons").show();
+		
+		webix.message("Changes discarded");
+	}
+	
+	saveUserInfo() {
+		const form = this.$$("userInfoForm");
+		const values = form.getValues();
+		
+		// Update auth service
+		const result = authService.updateProfile(values);
+		
+		// Disable all fields
+		form.elements.fullName.disable();
+		form.elements.country.disable();
+		form.elements.countryCode.disable();
+		form.elements.phone.disable();
+		form.elements.dateOfBirth.disable();
+		form.elements.gender.disable();
+		
+		// Toggle buttons
+		this.$$("editModeButtons").hide();
+		this.$$("viewModeButtons").show();
+		
+		webix.message({ type: "success", text: "Profile updated successfully" });
 	}
 	
 	openPasswordDialog() {
