@@ -117,7 +117,7 @@ export default class RegisterView extends JetView {
                     <div class="demo_credentials">
 						<p><strong>Demo Credentials:</strong></p>
 						<p>Email: john@example.com</p>
-						<p>Password: password123</p>
+						<p>Password: Password@123</p>
 					</div>
 				</div>
 			`

@@ -1,6 +1,6 @@
 import { JetView } from "webix-jet";
 import authService from "../services/auth";
-import { validateUserInfo } from "../helpers/validation";
+import { validateUserInfo, validatePasswordChange } from "../helpers/validation";
 
 export default class AccountView extends JetView {
 	config() {
@@ -330,83 +330,182 @@ export default class AccountView extends JetView {
 	}
 	
 	openPasswordDialog() {
-		if (this.passwordWindow) {
-			this.passwordWindow.show();
-			return;
-		}
-		
-		this.passwordWindow = webix.ui({
-			view: "window",
-			id: "passwordWindow",
-			head: "Change Password",
-			modal: true,
-			position: "center",
-			width: 450,
-			body: {
-				padding: 20,
-				rows: [
-					{
-						view: "form",
-						id: "passwordForm",
-						elements: [
-							{
-								view: "text",
-								type: "password",
-								label: "Current Password",
-								name: "currentPassword",
-								labelWidth: 150,
-								placeholder: "Enter current password"
-							},
-							{ height: 10 },
-							{
-								view: "text",
-								type: "password",
-								label: "New Password",
-								name: "newPassword",
-								labelWidth: 150,
-								placeholder: "Enter new password"
-							},
-							{ height: 10 },
-							{
-								view: "text",
-								type: "password",
-								label: "Confirm Password",
-								name: "confirmPassword",
-								labelWidth: 150,
-								placeholder: "Confirm new password"
-							},
-							{ height: 20 },
-							{
-								cols: [
-									{},
-									{
-										view: "button",
-										value: "Cancel",
-										width: 100,
-										click: () => {
-											this.passwordWindow.hide();
-											webix.$$("passwordForm").clear();
-										}
-									},
-									{
-										view: "button",
-										value: "Update Password",
-										width: 150,
-										css: "webix_primary",
-										click: () => this.changePassword()
-									}
-								]
-							}
-						]
-					}
-				]
-			}
-		});
-		
-		this.passwordWindow.show();
-	}
+        if (this.passwordWindow) {
+            this.passwordWindow.show();
+            return;
+        }
+        
+        this.passwordWindow = webix.ui({
+            view: "window",
+            id: "passwordWindow",
+            head: "Change Password",
+            modal: true,
+            position: "center",
+            width: 450,
+            body: {
+                padding: 20,
+                rows: [
+                    {
+                        view: "form",
+                        id: "passwordForm",
+                        elements: [
+                            {
+                                cols: [
+                                    {
+                                        view: "text",
+                                        type: "password",
+                                        label: "Current Password",
+                                        name: "currentPassword",
+                                        id: "currentPasswordField",
+                                        labelWidth: 150,
+                                        placeholder: "Enter current password"
+                                    },
+                                    {
+                                        view: "icon",
+                                        icon: "wxi-eye",
+                                        width: 40,
+                                        click: function() {
+                                            const field = webix.$$("currentPasswordField");
+                                            const isPassword = field.config.type === "password";
+                                            field.define("type", isPassword ? "text" : "password");
+                                            field.refresh();
+                                            this.define("icon", isPassword ? "wxi-eye-slash" : "wxi-eye");
+                                            this.refresh();
+                                        }
+                                    }
+                                ]
+                            },
+                            { height: 10 },
+                            {
+                                cols: [
+                                    {
+                                        view: "text",
+                                        type: "password",
+                                        label: "New Password",
+                                        name: "newPassword",
+                                        id: "newPasswordField",
+                                        labelWidth: 150,
+                                        placeholder: "Enter new password"
+                                    },
+                                    {
+                                        view: "icon",
+                                        icon: "wxi-eye",
+                                        width: 40,
+                                        click: function() {
+                                            const field = webix.$$("newPasswordField");
+                                            const isPassword = field.config.type === "password";
+                                            field.define("type", isPassword ? "text" : "password");
+                                            field.refresh();
+                                            this.define("icon", isPassword ? "wxi-eye-slash" : "wxi-eye");
+                                            this.refresh();
+                                        }
+                                    }
+                                ]
+                            },
+                            { height: 10 },
+                            {
+                                cols: [
+                                    {
+                                        view: "text",
+                                        type: "password",
+                                        label: "Confirm Password",
+                                        name: "confirmPassword",
+                                        id: "confirmPasswordField",
+                                        labelWidth: 150,
+                                        placeholder: "Confirm new password"
+                                    },
+                                    {
+                                        view: "icon",
+                                        icon: "wxi-eye",
+                                        width: 40,
+                                        click: function() {
+                                            const field = webix.$$("confirmPasswordField");
+                                            const isPassword = field.config.type === "password";
+                                            field.define("type", isPassword ? "text" : "password");
+                                            field.refresh();
+                                            this.define("icon", isPassword ? "wxi-eye-slash" : "wxi-eye");
+                                            this.refresh();
+                                        }
+                                    }
+                                ]
+                            },
+                            { height: 20 },
+                            {
+                                cols: [
+                                    {},
+                                    {
+                                        view: "button",
+                                        value: "Cancel",
+                                        width: 100,
+                                        click: () => {
+                                            this.passwordWindow.hide();
+                                            webix.$$("passwordForm").clear();
+                                            // Reset all icons and field types
+                                            webix.$$("currentPasswordField").define("type", "password");
+                                            webix.$$("newPasswordField").define("type", "password");
+                                            webix.$$("confirmPasswordField").define("type", "password");
+                                        }
+                                    },
+                                    {
+                                        view: "button",
+                                        value: "Update Password",
+                                        width: 150,
+                                        css: "webix_primary",
+                                        click: () => this.changePassword()
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+        
+        this.passwordWindow.show();
+    }
+    
 	
 	changePassword() {
-		webix.message("Password change logic will be implemented in next commit");
-	}
+        const form = webix.$$("passwordForm");
+        const values = form.getValues();
+        
+        // validate form
+        const validation = validatePasswordChange(values);
+        
+        if (!validation.valid) {
+            const firstError = validation.errors[0];
+            webix.message({ 
+                type: "error", 
+                text: firstError.message,
+                expire: 4000
+            });
+            return;
+        }
+        
+        const result = authService.changePassword(values.currentPassword, values.newPassword);
+        
+        if (result.success) {
+            webix.message({ 
+                type: "success", 
+                text: "Password changed successfully!",
+                expire: 3000
+            });
+            
+            // clear form and close window
+            form.clear();
+            this.passwordWindow.hide();
+            
+            // reset field types
+            webix.$$("currentPasswordField").define("type", "password");
+            webix.$$("newPasswordField").define("type", "password");
+            webix.$$("confirmPasswordField").define("type", "password");
+            
+        } else {
+            webix.message({ 
+                type: "error", 
+                text: result.error || "Failed to change password",
+                expire: 4000
+            });
+        }
+    }
 }

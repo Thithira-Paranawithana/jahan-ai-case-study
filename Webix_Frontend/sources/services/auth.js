@@ -2,10 +2,10 @@
 class AuthService {
 	constructor() {
 		this.currentUser = null;
-		// dummy user for testing
+		// dummy user for testing 
 		this.dummyUser = {
 			email: "john@example.com",
-			password: "password123",
+			password: "Password@123",  
 			fullName: "John Doe",
 			id: 1
 		};
@@ -17,7 +17,8 @@ class AuthService {
 			this.currentUser = {
 				id: this.dummyUser.id,
 				fullName: this.dummyUser.fullName,
-				email: this.dummyUser.email
+				email: this.dummyUser.email,
+				password: this.dummyUser.password 
 			};
 			
 			// store in storage
@@ -34,7 +35,8 @@ class AuthService {
 		const newUser = {
 			id: Date.now(),
 			fullName: fullName,
-			email: email
+			email: email,
+			password: password
 		};
 		
 		this.currentUser = newUser;
@@ -46,7 +48,7 @@ class AuthService {
 	getCurrentUser() {
 		if (this.currentUser) return this.currentUser;
 		
-		// Check storage
+		// check storage
 		let user = sessionStorage.getItem("currentUser");
 		if (!user) user = localStorage.getItem("currentUser");
 		
@@ -75,14 +77,33 @@ class AuthService {
 			return { success: false, error: "Not authenticated" };
 		}
 
-		// Merge new data with existing user data
 		this.currentUser = { ...currentUser, ...userData };
 		
-		// Determine which storage to use
+		//  which storage to use
 		const storage = localStorage.getItem("currentUser") ? localStorage : sessionStorage;
 		storage.setItem("currentUser", JSON.stringify(this.currentUser));
 		
 		return { success: true, user: this.currentUser };
+	}
+
+	changePassword(currentPassword, newPassword) {
+		const currentUser = this.getCurrentUser();
+		if (!currentUser) {
+			return { success: false, error: "Not authenticated" };
+		}
+
+		// verify current password
+		if (currentUser.password !== currentPassword) {
+			return { success: false, error: "Current password is incorrect" };
+		}
+
+		// update password
+		this.currentUser = { ...currentUser, password: newPassword };
+		
+		const storage = localStorage.getItem("currentUser") ? localStorage : sessionStorage;
+		storage.setItem("currentUser", JSON.stringify(this.currentUser));
+		
+		return { success: true, message: "Password changed successfully" };
 	}
 }
 
