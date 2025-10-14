@@ -301,3 +301,22 @@
         width: 460px;
     }
 }
+
+/* Demo Credentials  */
+.demo_credentials {
+    margin-top: 40px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.demo_credentials p {
+    margin: 5px 0;
+    font-size: 14px;
+    opacity: 0.95;
+}
+
+.demo_credentials strong {
+    font-weight: 600;
+}
