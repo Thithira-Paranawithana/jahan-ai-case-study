@@ -168,6 +168,10 @@ export default class RegisterView extends JetView {
 			
 			console.log("Register values:", values);
 			
+            // Redirect to login after successful registration
+			setTimeout(() => {
+				this.show("/login");
+			}, 1500);
 			
 		}
 	}
