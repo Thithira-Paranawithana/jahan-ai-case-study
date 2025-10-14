@@ -238,7 +238,7 @@ export default class AccountView extends JetView {
 		const form = this.$$("userInfoForm");
 		this.clearErrors();
 		
-		// enable all fields except email
+		// Enable all fields except email
 		form.elements.fullName.enable();
 		form.elements.country.enable();
 		form.elements.countryCode.enable();
@@ -246,7 +246,7 @@ export default class AccountView extends JetView {
 		form.elements.dateOfBirth.enable();
 		form.elements.gender.enable();
 		
-		// toggle buttons
+		// Toggle buttons
 		this.$$("viewModeButtons").hide();
 		this.$$("editModeButtons").show();
 		
@@ -258,7 +258,7 @@ export default class AccountView extends JetView {
 		const form = this.$$("userInfoForm");
 		this.clearErrors();
 		
-		// reset form to original values
+		// Reset form to original values
 		form.setValues({
 			fullName: user?.fullName || "",
 			country: user?.country || "",
@@ -269,7 +269,7 @@ export default class AccountView extends JetView {
 			gender: user?.gender || "prefer_not_to_say"
 		});
 		
-		// disable all fields
+		// Disable all fields
 		form.elements.fullName.disable();
 		form.elements.country.disable();
 		form.elements.countryCode.disable();
@@ -277,7 +277,7 @@ export default class AccountView extends JetView {
 		form.elements.dateOfBirth.disable();
 		form.elements.gender.disable();
 		
-		// toggle buttons
+		// Toggle buttons
 		this.$$("editModeButtons").hide();
 		this.$$("viewModeButtons").show();
 		
@@ -285,58 +285,128 @@ export default class AccountView extends JetView {
 	}
 	
 	saveUserInfo() {
-        const form = this.$$("userInfoForm");
-        const values = form.getValues();
-        
-        // clear previous errors
-        this.clearErrors();
-        
-        // validate form
-        const validation = validateUserInfo(values);
-        
-        if (!validation.valid) {
-            // show errors
-            validation.errors.forEach(error => {
-                this.showError(error.field, error.message);
-            });
-            webix.message({ type: "error", text: "Please fix the errors before saving" });
-            return;
-        }
-        
-        // update auth service
-        const result = authService.updateProfile(values);
-        
-        if (result && result.success) {
-            // disable all fields
-            form.elements.fullName.disable();
-            form.elements.country.disable();
-            form.elements.countryCode.disable();
-            form.elements.phone.disable();
-            form.elements.dateOfBirth.disable();
-            form.elements.gender.disable();
-            
-            // toggle buttons
-            this.$$("editModeButtons").hide();
-            this.$$("viewModeButtons").show();
-            
-            // show success message 
-            webix.message({ 
-                type: "success", 
-                text: "Profile updated successfully",
-                expire: 3000
-            });
-            
-       
-            console.log("Updated profile data:", result.user);
-            console.log("Storage check:", authService.getCurrentUser());
-            
-        } else {
-            webix.message({ type: "error", text: result.error || "Failed to update profile" });
-        }
-    }
-    
+		const form = this.$$("userInfoForm");
+		const values = form.getValues();
+		
+		// Clear previous errors
+		this.clearErrors();
+		
+		// Validate form
+		const validation = validateUserInfo(values);
+		
+		if (!validation.valid) {
+			// Show errors
+			validation.errors.forEach(error => {
+				this.showError(error.field, error.message);
+			});
+			webix.message({ type: "error", text: "Please fix the errors before saving" });
+			return;
+		}
+		
+		// Update auth service
+		const result = authService.updateProfile(values);
+		
+		if (result && result.success) {
+			// Disable all fields
+			form.elements.fullName.disable();
+			form.elements.country.disable();
+			form.elements.countryCode.disable();
+			form.elements.phone.disable();
+			form.elements.dateOfBirth.disable();
+			form.elements.gender.disable();
+			
+			// Toggle buttons
+			this.$$("editModeButtons").hide();
+			this.$$("viewModeButtons").show();
+			
+			webix.message({ 
+				type: "success", 
+				text: "Profile updated successfully",
+				expire: 3000
+			});
+		} else {
+			webix.message({ type: "error", text: result.error || "Failed to update profile" });
+		}
+	}
 	
 	openPasswordDialog() {
-		webix.message("Password change dialog will open here");
+		if (this.passwordWindow) {
+			this.passwordWindow.show();
+			return;
+		}
+		
+		this.passwordWindow = webix.ui({
+			view: "window",
+			id: "passwordWindow",
+			head: "Change Password",
+			modal: true,
+			position: "center",
+			width: 450,
+			body: {
+				padding: 20,
+				rows: [
+					{
+						view: "form",
+						id: "passwordForm",
+						elements: [
+							{
+								view: "text",
+								type: "password",
+								label: "Current Password",
+								name: "currentPassword",
+								labelWidth: 150,
+								placeholder: "Enter current password"
+							},
+							{ height: 10 },
+							{
+								view: "text",
+								type: "password",
+								label: "New Password",
+								name: "newPassword",
+								labelWidth: 150,
+								placeholder: "Enter new password"
+							},
+							{ height: 10 },
+							{
+								view: "text",
+								type: "password",
+								label: "Confirm Password",
+								name: "confirmPassword",
+								labelWidth: 150,
+								placeholder: "Confirm new password"
+							},
+							{ height: 20 },
+							{
+								cols: [
+									{},
+									{
+										view: "button",
+										value: "Cancel",
+										width: 100,
+										click: () => {
+											this.passwordWindow.hide();
+											webix.$$("passwordForm").clear();
+										}
+									},
+									{
+										view: "button",
+										value: "Update Password",
+										width: 150,
+										css: "webix_primary",
+										click: () => this.changePassword()
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		});
+		
+		this.passwordWindow.show();
+	}
+	
+	changePassword() {
+		webix.message("Password change logic will be implemented in next commit");
 	}
 }
