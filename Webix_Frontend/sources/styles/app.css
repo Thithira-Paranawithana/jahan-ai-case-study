@@ -1,31 +1,58 @@
-.webixappstart{
-    opacity:0;
+/* Global App Styles */
+.webixappstart {
+    opacity: 0;
 }
-.webixapp{
+
+.webixapp {
     transition: opacity 500ms;
     opacity: 1;
 }
 
-/*data loading status*/
-.status_good, .status_error, .status_saving{
-	text-align: center;
-	margin-left:-12px;
-}
-.status_error{
-	color:red;
-}
-.status_good{
-	color:green;
+/* Common Utility Classes */
+.text-center {
+    text-align: center;
 }
 
-/*login form*/
-.invalid_login .webix_header > div{
+/* Data Loading Status */
+.status_good, .status_error, .status_saving {
+    text-align: center;
+    margin-left: -12px;
+}
+
+.status_error {
+    color: red;
+}
+
+.status_good {
+    color: green;
+}
+
+/* App Header and Layout */
+.app_header.webix_header {
+    text-align: center;
+}
+
+.app_layout.webix_layout_clean {
+    background: #EBEDF0;
+}
+
+/* App Menu */
+.app_menu .webix_icon {
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+/* Form Shake Animation - Global */
+.invalid_form .webix_header > div {
     background: #FC3636;
     transition: background 1s;
 }
-.invalid_login{
+
+.invalid_form {
     -webkit-animation: formshake .5s linear;
+    animation: formshake .5s linear;
 }
+
 @-webkit-keyframes formshake {
     8%, 41% {
         -webkit-transform: translateX(-10px);
@@ -43,16 +70,21 @@
         -webkit-transform: translateX(0);
     }
 }
-.app_header.webix_header{
-	text-align:center;
-}
-.app_layout.webix_layout_clean{
-	background: #EBEDF0;
-}
-.app_start .webix_template{
-	padding:12px 12px;
-}
-.app_menu .webix_icon{
-	font-size:20px;
-	vertical-align:middle;
+
+@keyframes formshake {
+    8%, 41% {
+        transform: translateX(-10px);
+    }
+    25%, 58% {
+        transform: translateX(10px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+    92% {
+        transform: translateX(5px);
+    }
+    0%, 100% {
+        transform: translateX(0);
+    }
 }
