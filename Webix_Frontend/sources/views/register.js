@@ -1,5 +1,6 @@
 import { JetView } from "webix-jet";
 import "../styles/register.css";
+import authService from "../services/auth";
 
 export default class RegisterView extends JetView {
 	config() {
@@ -113,6 +114,11 @@ export default class RegisterView extends JetView {
 							<li>✓ Advanced privacy options</li>
 						</ul>
 					</div>
+                    <div class="demo_credentials">
+						<p><strong>Demo Credentials:</strong></p>
+						<p>Email: john@example.com</p>
+						<p>Password: password123</p>
+					</div>
 				</div>
 			`
 		};
@@ -142,6 +148,12 @@ export default class RegisterView extends JetView {
 	}
 
 	init() {
+		// check if already logged in
+		if (authService.isAuthenticated()) {
+			this.show("/top/settings");
+			return;
+		}
+		
 		this.$$("registerForm").elements.fullName.focus();
 	}
 
@@ -154,26 +166,35 @@ export default class RegisterView extends JetView {
 			return;
 		}
 
-		if (form.validate()) {
-			const values = form.getValues();
-			
-			if (values.password !== values.confirmPassword) {
-				webix.message({ type: "error", text: "Passwords do not match" });
-				return;
-			}
+		if (!form.validate()) {
+			webix.message({ type: "error", text: "Please fill in all fields correctly" });
+			return;
+		}
 
-			webix.message({ 
-				type: "success", 
-				text: `Account created for ${values.email}!` 
-			});
+		const values = form.getValues();
+		
+		if (values.password !== values.confirmPassword) {
+			webix.message({ type: "error", text: "Passwords do not match" });
+			return;
+		}
+
+		if (values.password.length < 6) {
+			webix.message({ type: "error", text: "Password must be at least 6 characters long" });
+			return;
+		}
+
+		// call auth service
+		const result = authService.register(values.fullName, values.email, values.password);
+		
+		if (result.success) {
+			webix.message({ type: "success", text: "Account created successfully!" });
 			
-			console.log("Register values:", values);
-			
-            // Redirect to login after successful registration
+			// redirect to dashboard
 			setTimeout(() => {
-				this.show("/login");
-			}, 1500);
-			
+				this.show("/top/settings");
+			}, 1000);
+		} else {
+			webix.message({ type: "error", text: result.error });
 		}
 	}
 }
