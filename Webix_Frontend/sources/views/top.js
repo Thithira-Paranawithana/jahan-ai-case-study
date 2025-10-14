@@ -5,6 +5,12 @@ export default class TopView extends JetView{
 	config(){
 		const user = authService.getCurrentUser();
 		
+		// redirect to login if not authenticated
+		if (!user) {
+			this.show("/login");
+			return {};
+		}
+		
 		var toolbar = {
 			view:"toolbar",
 			height: 60,
@@ -17,7 +23,7 @@ export default class TopView extends JetView{
 				{},
 				{
 					view:"label",
-					label: user ? user.fullName : "Guest",
+					label: user.fullName,
 					width: 150
 				},
 				{
@@ -37,6 +43,13 @@ export default class TopView extends JetView{
 		};
 
 		return ui;
+	}
+	
+	init(){
+		// double check authentication on init
+		if (!authService.isAuthenticated()) {
+			this.show("/login");
+		}
 	}
 	
 	doLogout() {
