@@ -1,4 +1,5 @@
 import { JetView } from "webix-jet";
+import "../styles/register.css";
 
 export default class RegisterView extends JetView {
 	config() {
@@ -104,12 +105,12 @@ export default class RegisterView extends JetView {
 					</div>
 					<div class="brand_content">
 						<h3>Join Us Today</h3>
-						<p>Create your account and take control of your personalized experience.</p>
+						<p>Manage your account settings, notifications, themes, and privacy preferences all in one place.</p>
 						<ul class="feature_list">
-							<li>✓ Quick and easy setup</li>
-							<li>✓ Secure account management</li>
-							<li>✓ Full customization control</li>
-							<li>✓ Privacy-first approach</li>
+							<li>✓ Personalized account settings</li>
+							<li>✓ Smart notification controls</li>
+							<li>✓ Customizable themes</li>
+							<li>✓ Advanced privacy options</li>
 						</ul>
 					</div>
 				</div>
