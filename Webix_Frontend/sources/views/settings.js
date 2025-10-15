@@ -25,10 +25,7 @@ export default class SettingsView extends JetView {
 				{
 					cells: [
 						{ id: "account", $subview: "account" },
-						{
-							id: "notifications",
-							template: "<div style='padding:30px'>Notification preferences will be configured here.</div>"
-						},
+						{ id: "notifications", $subview: "notifications" },
 						{
 							id: "theme",
 							template: "<div style='padding:30px'>Theme customization options will be available here.</div>"
