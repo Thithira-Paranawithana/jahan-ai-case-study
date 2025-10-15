@@ -41,12 +41,12 @@ export default class PrivacyView extends JetView {
 														borderless: true 
 													},
 													{
-														view: "radio",
+														view: "segmented",
 														name: "profileVisibility",
 														value: privacy.profileVisibility || "public",
 														options: [
-															{ id: "public", value: "Public (Anyone can view)" },
-															{ id: "private", value: "Private (Only you)" }
+															{ id: "public", value: "🌐 Public" },
+															{ id: "private", value: "🔒 Private" }
 														]
 													},
 													
@@ -59,10 +59,20 @@ export default class PrivacyView extends JetView {
 														borderless: true 
 													},
 													{
-														view: "checkbox",
-														labelRight: "Show when you're online",
-														name: "showOnlineStatus",
-														value: privacy.showOnlineStatus !== false ? 1 : 0
+														cols: [
+															{
+																view: "template",
+																template: "<span style='line-height: 40px;'>Show when you're online</span>",
+																borderless: true,
+																autoheight: true
+															},
+															{
+																view: "switch",
+																name: "showOnlineStatus",
+																value: privacy.showOnlineStatus !== false ? 1 : 0,
+																width: 60
+															}
+														]
 													},
 													
 													// Data Sharing Section
@@ -74,17 +84,37 @@ export default class PrivacyView extends JetView {
 														borderless: true 
 													},
 													{
-														view: "checkbox",
-														labelRight: "Share usage data to improve the service",
-														name: "shareUsageData",
-														value: privacy.shareUsageData !== false ? 1 : 0
+														cols: [
+															{
+																view: "template",
+																template: "<span style='line-height: 40px;'>Share usage data to improve the service</span>",
+																borderless: true,
+																autoheight: true
+															},
+															{
+																view: "switch",
+																name: "shareUsageData",
+																value: privacy.shareUsageData !== false ? 1 : 0,
+																width: 60
+															}
+														]
 													},
-													{ height: 8 },
+													{ height: 10 },
 													{
-														view: "checkbox",
-														labelRight: "Allow personalized recommendations",
-														name: "personalizedRecommendations",
-														value: privacy.personalizedRecommendations !== false ? 1 : 0
+														cols: [
+															{
+																view: "template",
+																template: "<span style='line-height: 40px;'>Allow personalized recommendations</span>",
+																borderless: true,
+																autoheight: true
+															},
+															{
+																view: "switch",
+																name: "personalizedRecommendations",
+																value: privacy.personalizedRecommendations !== false ? 1 : 0,
+																width: 60
+															}
+														]
 													},
 													
 													// Search Visibility Section
@@ -96,10 +126,20 @@ export default class PrivacyView extends JetView {
 														borderless: true 
 													},
 													{
-														view: "checkbox",
-														labelRight: "Allow others to find you by email",
-														name: "searchByEmail",
-														value: privacy.searchByEmail !== false ? 1 : 0
+														cols: [
+															{
+																view: "template",
+																template: "<span style='line-height: 40px;'>Allow others to find you by email</span>",
+																borderless: true,
+																autoheight: true
+															},
+															{
+																view: "switch",
+																name: "searchByEmail",
+																value: privacy.searchByEmail !== false ? 1 : 0,
+																width: 60
+															}
+														]
 													},
 													
 													{ height: 30 },
@@ -130,6 +170,6 @@ export default class PrivacyView extends JetView {
 	}
 	
 	savePrivacySettings() {
-		webix.message({ type: "success", text: "Privacy settings saved " });
+		webix.message({ type: "success", text: "Privacy settings saved (save functionality coming soon)" });
 	}
 }
