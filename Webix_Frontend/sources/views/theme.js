@@ -86,11 +86,7 @@ export default class ThemeView extends JetView {
 		};
 	}
 	
-	// changeTheme(mode) {
-	// 	// Apply theme immediately
-	// 	themeService.setThemeMode(mode);
-	// 	webix.message({ type: "success", text: `Switched to ${mode} theme`, expire: 2000 });
-	// }
+	
 
     changeTheme(mode) {
         // Apply theme immediately
