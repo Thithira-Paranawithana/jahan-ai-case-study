@@ -123,10 +123,17 @@ body {
     color: var(--text-primary);
 }
 
-/* Buttons */
-.webix_primary {
+/* Primary Button Styling */
+.webix_primary .webix_button {
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
+    color: #ffffff !important; 
+    transition: filter 0.2s ease; 
+}
+
+.webix_primary .webix_button:hover {
+    background-color: var(--primary-color) !important; 
+    filter: brightness(90%); 
 }
 
 /* Focus indicators for accessibility */
@@ -558,4 +565,30 @@ body.high-contrast .webix_list_item:hover {
 .delete-account-button button {
     background-color: #dc2626 !important;
     color: white !important;
+}
+
+
+/* --- Color Palette Styling --- */
+.color-palette-container {
+    padding-top: 10px;
+}
+
+.color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%; /* Makes it a circle */
+    cursor: pointer;
+    margin: 0 auto;
+    border: 3px solid transparent;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.selected {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--bg-primary), 0 0 0 5px var(--primary-color);
 }

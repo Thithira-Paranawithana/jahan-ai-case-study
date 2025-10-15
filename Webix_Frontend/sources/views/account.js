@@ -179,6 +179,7 @@ export default class AccountView extends JetView {
                                                                 view: "button",
                                                                 value: "Change Password",
                                                                 width: 160,
+																css: "webix_primary",
                                                                 id: "passwordButton",
                                                                 click: () => this.openPasswordDialog()
                                                             },
@@ -187,6 +188,7 @@ export default class AccountView extends JetView {
                                                                 view: "button",
                                                                 value: "Edit Profile",
                                                                 width: 130,
+																css: "webix_primary",
                                                                 id: "editButton",
                                                                 click: () => this.enableEditMode()
                                                             }

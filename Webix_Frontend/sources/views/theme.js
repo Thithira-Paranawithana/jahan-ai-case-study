@@ -2,6 +2,14 @@
 import { JetView } from "webix-jet";
 import themeService from "../services/themeService";
 
+const predefinedColors = [
+    { id: 1, hex: "#267484" }, 
+    { id: 2, hex: "#36a6ff" }, 
+    { id: 3, hex: "#13505a" }, 
+    { id: 4, hex: "#619ad2" }, 
+    { id: 5, hex: "#24588c" }, 
+    { id: 6, hex: "#33618f" }, 
+];
 export default class ThemeView extends JetView {
 	config() {
 		const currentTheme = themeService.getCurrentTheme();
@@ -123,28 +131,43 @@ export default class ThemeView extends JetView {
 
                                                     // Accent Color Section
                                                     { height: 20 },
-                                                    { 
-                                                        view: "template", 
-                                                        template: "<h4 style='margin-bottom: 5px;'>Accent Color</h4>", 
-                                                        autoheight: true, 
-                                                        borderless: true 
-                                                    },
                                                     {
-                                                        view: "template",
-                                                        template: "<p style='margin: 5px 0 10px 0; color: var(--text-secondary);'>Personalize the look of buttons and highlights.</p>",
-                                                        autoheight: true,
-                                                        borderless: true
-                                                    },
-                                                    {
-                                                        view: "colorpicker",
-                                                        id: "primaryColorPicker",
-                                                        name: "primaryColor",
-                                                        label: "Primary Color",
-                                                        labelWidth: 120,
-                                                        value: currentTheme.primaryColor || "#2196F3",
-                                                        on: {
-                                                            onChange: (newValue) => this.changePrimaryColor(newValue)
-                                                        }
+                                                        view: "layout", 
+                                                        css: "account-setting-card",
+                                                        rows: [ 
+                                                            { view: "template", template: "<h4>Accent Color</h4>", autoheight: true, borderless: true },
+                                                            {
+                                                                view: "template",
+                                                                template: "<p style='margin: 5px 0 10px 0; color: var(--text-secondary);'>Personalize the look of buttons and highlights.</p>",
+                                                                autoheight: true,
+                                                                borderless: true
+                                                            },
+                                                            // Color Palette
+                                                            {
+                                                                view: "dataview",
+                                                                id: "colorPalette",
+                                                                css: "color-palette-container",
+                                                                autoheight: true, // This is still needed
+                                                                xCount: 6,
+                                                                select: true,
+                                                                data: predefinedColors,
+                                                                type: {
+                                                                    width: "auto",
+                                                                    height: 40,
+                                                                    template: obj => {
+                                                                        const isSelected = obj.hex === themeService.getCurrentTheme().primaryColor;
+                                                                        return `<div class='color-swatch ${isSelected ? "selected" : ""}' style='background-color:${obj.hex};'></div>`;
+                                                                    }
+                                                                },
+                                                                on: {
+                                                                    onItemClick: (id) => {
+                                                                        const color = this.$$("colorPalette").getItem(id);
+                                                                        this.changePrimaryColor(color.hex);
+                                                                    }
+                                                                }
+                                                            },
+                                                            
+                                                        ]
                                                     },
 
                                                     // High Contrast Section
@@ -190,13 +213,15 @@ export default class ThemeView extends JetView {
 													{ height: 30 },
 													{
 														cols: [
+                                                            {},
 															{
 																view: "button",
 																value: "Reset to Default",
 																width: 150,
+                                                                css: "webix_primary",
 																click: () => this.resetTheme()
 															},
-															{}
+															
 														]
 													}
 												]
@@ -215,6 +240,7 @@ export default class ThemeView extends JetView {
 
     changePrimaryColor(color) {
         themeService.setPrimaryColor(color);
+        this.$$("colorPalette").refresh();
     }
 	
 	changeTheme(mode) {
@@ -270,8 +296,8 @@ export default class ThemeView extends JetView {
         this.$$("fontSizeSlider").setValue(defaultTheme.fontSize);
         this.$$("fontFamilySelector").setValue(defaultTheme.fontFamily);
         this.$$("highContrastSwitch").setValue(defaultTheme.highContrast ? 1 : 0);
-        this.$$("primaryColorPicker").setValue(defaultTheme.primaryColor);
-
+        
+        this.$$("colorPalette").refresh(); // This line remains
         
         webix.message({ type: "info", text: "All theme settings reset to default" });
     }

@@ -26,7 +26,7 @@ class ThemeService {
             fontSize: 14,
             fontFamily: "system",
             highContrast: false,
-            primaryColor: "#38AEA2" 
+            primaryColor: "#33618f" 
         };
     }
 
