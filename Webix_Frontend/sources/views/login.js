@@ -3,6 +3,12 @@ import "../styles/login.css";
 import authService from "../services/auth";
 
 export default class LoginView extends JetView {
+
+	ready() {
+		// Remove authenticated class on login page
+		document.body.classList.remove("authenticated");
+	}
+	
 	config() {
 		const loginForm = {
 			view: "form",

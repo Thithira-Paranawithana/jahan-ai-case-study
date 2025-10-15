@@ -98,7 +98,22 @@ body {
     color: var(--error-color);
 }
 
-/* Apply theme to Webix components */
+.webix_view,
+.webix_el_box, /* A common container for form elements */
+.webix_inp_static,
+.webix_el_text input,
+.webix_el_combo input,
+.webix_el_select select,
+.webix_inp_textarea,
+.webix_button,
+.webix_list_item,
+.webix_item_tab,
+.webix_template {
+    font-family: var(--font-family) !important; /* Use !important here to ensure override */
+    font-size: var(--base-font-size) !important; /* Use !important here to ensure override */
+}
+
+/* We still need a base rule for background and color on the main view container */
 .webix_view {
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -383,3 +398,4 @@ body {
 .webix_label_right {
     color: var(--text-primary) !important;
 }
+

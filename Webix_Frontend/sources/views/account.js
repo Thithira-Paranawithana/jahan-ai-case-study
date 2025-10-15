@@ -229,7 +229,7 @@ export default class AccountView extends JetView {
 	
 	showError(fieldId, message) {
 		const errorTemplate = this.$$(fieldId + "Error");
-		errorTemplate.setHTML(`<span style="color: #e53e3e; font-size: 12px;">${message}</span>`);
+		errorTemplate.setHTML(`<span style="color: #e53e3e; ">${message}</span>`);
 		errorTemplate.config.height = 25;
 		this.$$("userInfoForm").resize();
 	}

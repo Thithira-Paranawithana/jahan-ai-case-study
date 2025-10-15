@@ -71,7 +71,7 @@ export default class PrivacyView extends JetView {
                                                         cols: [
                                                             {
                                                                 view: "template",
-                                                                template: "<span style='line-height: 40px; font-size: 14px;'>Show when you're online</span>",
+                                                                template: "<span style='line-height: 40px; '>Show when you're online</span>",
                                                                 borderless: true,
                                                                 autoheight: true
                                                             },
@@ -99,7 +99,7 @@ export default class PrivacyView extends JetView {
                                                         cols: [
                                                             {
                                                                 view: "template",
-                                                                template: "<span style='line-height: 40px; font-size: 14px;'>Share usage data to improve the service</span>",
+                                                                template: "<span style='line-height: 40px; '>Share usage data to improve the service</span>",
                                                                 borderless: true,
                                                                 autoheight: true
                                                             },
@@ -119,7 +119,7 @@ export default class PrivacyView extends JetView {
                                                         cols: [
                                                             {
                                                                 view: "template",
-                                                                template: "<span style='line-height: 40px; font-size: 14px;'>Allow personalized recommendations</span>",
+                                                                template: "<span style='line-height: 40px; '>Allow personalized recommendations</span>",
                                                                 borderless: true,
                                                                 autoheight: true
                                                             },
@@ -147,7 +147,7 @@ export default class PrivacyView extends JetView {
                                                         cols: [
                                                             {
                                                                 view: "template",
-                                                                template: "<span style='line-height: 40px; font-size: 14px;'>Allow others to find you by email</span>",
+                                                                template: "<span style='line-height: 40px; '>Allow others to find you by email</span>",
                                                                 borderless: true,
                                                                 autoheight: true
                                                             },
@@ -175,7 +175,7 @@ export default class PrivacyView extends JetView {
                                                         cols: [
                                                             {
                                                                 view: "template",
-                                                                template: "<span style='line-height: 40px; font-size: 14px;'>Enable two-factor authentication (2FA)</span>",
+                                                                template: "<span style='line-height: 40px; '>Enable two-factor authentication (2FA)</span>",
                                                                 borderless: true,
                                                                 autoheight: true
                                                             },
@@ -199,7 +199,7 @@ export default class PrivacyView extends JetView {
                                                         rows: [
                                                             { 
                                                                 view: "template", 
-                                                                template: "<p style='margin: 0 0 8px 0; font-size: 13px; color: #666;'>Select authentication method:</p>", 
+                                                                template: "<p style='margin: 0 0 8px 0; color: #666;'>Select authentication method:</p>", 
                                                                 autoheight: true, 
                                                                 borderless: true 
                                                             },

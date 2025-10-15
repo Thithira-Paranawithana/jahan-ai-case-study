@@ -2,6 +2,16 @@ import {JetView} from "webix-jet";
 import authService from "../services/auth";
 
 export default class TopView extends JetView{
+
+	ready() {
+		// Add authenticated class when entering main app
+		document.body.classList.add("authenticated");
+		// Reapply theme to ensure fonts load
+		import("../services/themeService").then(module => {
+			module.default.applyTheme();
+		});
+	}
+	
 	config(){
 		const user = authService.getCurrentUser();
 		

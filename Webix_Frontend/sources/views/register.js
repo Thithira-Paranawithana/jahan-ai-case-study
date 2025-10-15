@@ -3,6 +3,11 @@ import "../styles/register.css";
 import authService from "../services/auth";
 
 export default class RegisterView extends JetView {
+	ready() {
+		// Remove authenticated class on login page
+		document.body.classList.remove("authenticated");
+	}
+	
 	config() {
 		const registerForm = {
 			view: "form",

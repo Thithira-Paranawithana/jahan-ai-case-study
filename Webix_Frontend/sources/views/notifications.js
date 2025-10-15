@@ -47,7 +47,7 @@ export default class NotificationsView extends JetView {
                                                         cols: [
                                                             {
                                                                 view: "template",
-                                                                template: "<span style='line-height: 40px; font-size: 14px;'>Enable Email Notifications</span>",
+                                                                template: "<span style='line-height: 40px;  '>Enable Email Notifications</span>",
                                                                 borderless: true,
                                                                 autoheight: true
                                                             },
@@ -107,7 +107,7 @@ export default class NotificationsView extends JetView {
                                                         cols: [
                                                             {
                                                                 view: "template",
-                                                                template: "<span style='line-height: 40px; font-size: 14px;'>Enable Push Notifications</span>",
+                                                                template: "<span style='line-height: 40px; '>Enable Push Notifications</span>",
                                                                 borderless: true,
                                                                 autoheight: true
                                                             },
@@ -187,7 +187,7 @@ export default class NotificationsView extends JetView {
                                                         cols: [
                                                             {
                                                                 view: "template",
-                                                                template: "<span style='line-height: 40px; font-size: 14px;'>Play sound for notifications</span>",
+                                                                template: "<span style='line-height: 40px; '>Play sound for notifications</span>",
                                                                 borderless: true,
                                                                 autoheight: true
                                                             },
@@ -211,7 +211,7 @@ export default class NotificationsView extends JetView {
                                                         rows: [
                                                             { 
                                                                 view: "template", 
-                                                                template: "<p style='margin: 0 0 8px 0; font-size: 13px; color: #666;'>Select notification tone:</p>", 
+                                                                template: "<p style='margin: 0 0 8px 0;  color: #666;'>Select notification tone:</p>", 
                                                                 autoheight: true, 
                                                                 borderless: true 
                                                             },
