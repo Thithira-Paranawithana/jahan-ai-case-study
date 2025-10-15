@@ -1,20 +1,123 @@
-/* Simple global styles */
+/* CSS Custom Properties for Theming */
+:root {
+    /* Light Theme Colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-color: #e0e0e0;
+    --primary-color: #2196F3;
+    --accent-color: #4CAF50;
+    --error-color: #f44336;
+    --success-color: #4CAF50;
+    --warning-color: #ff9800;
+    
+    /* Default Font Settings */
+    --base-font-size: 14px;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --border-color: #444444;
+    --primary-color: #42A5F5;
+    --accent-color: #66BB6A;
+}
+
+/* Font Sizes */
+[data-font-size="small"] {
+    --base-font-size: 12px;
+}
+
+[data-font-size="medium"] {
+    --base-font-size: 14px;
+}
+
+[data-font-size="large"] {
+    --base-font-size: 16px;
+}
+
+[data-font-size="extra-large"] {
+    --base-font-size: 18px;
+}
+
+/* Font Families */
+[data-font-family="system"] {
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+[data-font-family="sans-serif"] {
+    --font-family: Arial, Helvetica, sans-serif;
+}
+
+[data-font-family="serif"] {
+    --font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+[data-font-family="monospace"] {
+    --font-family: "Courier New", Courier, monospace;
+}
+
+/* High Contrast Mode */
+[data-high-contrast="true"] {
+    --bg-primary: #000000;
+    --bg-secondary: #1a1a1a;
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --border-color: #ffffff;
+    --primary-color: #00ffff;
+    --accent-color: #00ff00;
+}
+
+/* Global Styles with Theme Variables */
 body {
-    font-family: Arial, sans-serif;
+    font-family: var(--font-family);
+    font-size: var(--base-font-size);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .app_title .webix_el_label {
     font-size: 18px;
     font-weight: bold;
     padding-left: 15px;
+    color: var(--text-primary);
 }
 
 .error_message {
     padding-left: 150px;
     margin-top: -10px;
     margin-bottom: 5px;
+    color: var(--error-color);
+}
+
+/* Apply theme to Webix components */
+.webix_view {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.webix_template {
+    color: var(--text-primary);
+}
+
+/* Buttons */
+.webix_primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Focus indicators for accessibility */
+*:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 /* Notification Form Specific Styles */
@@ -30,7 +133,6 @@ body {
     overflow: visible !important;
 }
 
-/* Allow text to wrap everywhere with proper spacing */
 .notification-preferences-form .webix_label_right,
 .notification-preferences-form .webix_radio_option,
 .notification-preferences-form .webix_el_label {
@@ -41,21 +143,18 @@ body {
     padding: 4px 0 !important;
 }
 
-/* Add spacing between form elements to prevent overlap */
 .notification-preferences-form .webix_el_checkbox,
 .notification-preferences-form .webix_el_radio {
     margin-bottom: 12px !important;
     min-height: 30px !important;
 }
 
-/* Ensure checkbox and radio labels have proper spacing */
 .notification-preferences-form .webix_inp_checkbox_border,
 .notification-preferences-form .webix_inp_radio_border {
     margin-top: 4px !important;
     align-self: flex-start !important;
 }
 
-/* Force radio buttons container to be fully visible */
 .notification-preferences-form .webix_radio {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -64,7 +163,6 @@ body {
     min-height: 50px !important;
 }
 
-/* Radio button options should not shrink */
 .notification-preferences-form .webix_radio_option {
     flex-shrink: 0 !important;
     margin-right: 20px !important;
@@ -72,12 +170,10 @@ body {
     white-space: nowrap !important;
 }
 
-/* Ensure parent containers don't clip content */
 .notification-preferences-form .webix_scroll_cont {
     overflow: visible !important;
 }
 
-/* Stack radio buttons vertically on smaller screens */
 @media (max-width: 900px) {
     .notification-preferences-form .webix_radio {
         flex-direction: column !important;
@@ -90,29 +186,200 @@ body {
     }
 }
 
-
-/* Privacy Settings Card Rows */
-.privacy-setting-row {
-	background: #ffffff;
-	border: 1px solid #e0e0e0;
-	border-radius: 8px;
-	margin-bottom: 8px;
-}
-
-.privacy-setting-row:hover {
-	background: #f9f9f9;
-	border-color: #d0d0d0;
-}
-
-/* Notification Settings Card Rows */
+/* Card Rows for Settings */
+.privacy-setting-row,
 .notification-setting-row {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     margin-bottom: 8px;
+    transition: all 0.3s ease;
 }
 
+.privacy-setting-row:hover,
 .notification-setting-row:hover {
-    background: #f9f9f9;
-    border-color: #d0d0d0;
+    background: var(--bg-secondary);
+    border-color: var(--text-secondary);
+}
+
+/* Theme Settings */
+.theme-settings-form {
+    overflow: visible !important;
+}
+
+.theme-preview-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.theme-preview-light {
+    background: #ffffff;
+    color: #333333;
+}
+
+.theme-preview-light h2 {
+    color: #1a1a1a;
+}
+
+.theme-preview-light button {
+    background: #2196F3;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+}
+
+.theme-preview-dark {
+    background: #1e1e1e;
+    color: #e0e0e0;
+    border-color: #444444;
+}
+
+.theme-preview-dark h2 {
+    color: #ffffff;
+}
+
+.theme-preview-dark button {
+    background: #4CAF50;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+}
+
+/* Comprehensive Dark Theme Webix Styling */
+.webix_form,
+.webix_el_box,
+.webix_scroll_cont {
+    background-color: var(--bg-primary) !important;
+}
+
+.webix_inp_static,
+.webix_el_text input,
+.webix_el_combo input,
+.webix_el_select select,
+.webix_inp_textarea {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.webix_inp_label,
+.webix_el_label div {
+    color: var(--text-primary) !important;
+}
+
+.webix_el_radio,
+.webix_el_checkbox {
+    background-color: var(--bg-primary) !important;
+}
+
+.webix_segment_0,
+.webix_segment_1,
+.webix_segment_2,
+.webix_segment_N {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.webix_segment_0.webix_selected,
+.webix_segment_1.webix_selected,
+.webix_segment_2.webix_selected,
+.webix_segment_N.webix_selected {
+    background-color: var(--primary-color) !important;
+    color: #ffffff !important;
+}
+
+.webix_el_switch {
+    background-color: var(--bg-primary) !important;
+}
+
+.webix_button,
+.webix_el_button button {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.webix_button:hover {
+    background-color: var(--border-color) !important;
+}
+
+.webix_scroll_body {
+    background-color: var(--bg-primary) !important;
+}
+
+.webix_item_tab {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.webix_item_tab.webix_selected {
+    background-color: var(--bg-primary) !important;
+    border-bottom-color: var(--primary-color) !important;
+}
+
+.webix_toolbar {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.webix_list_item {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.webix_list {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+.webix_list .webix_list_item:hover {
+    background-color: var(--bg-secondary) !important;
+}
+
+.webix_cal_body {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+.webix_cal_header {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+.webix_template h1,
+.webix_template h2,
+.webix_template h3,
+.webix_template h4,
+.webix_template h5,
+.webix_template h6 {
+    color: var(--text-primary) !important;
+}
+
+.webix_template p {
+    color: var(--text-secondary) !important;
+}
+
+.webix_popup,
+.webix_window {
+    background-color: var(--bg-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.webix_message_area {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+.webix_radio_option {
+    color: var(--text-primary) !important;
+}
+
+.webix_label_right {
+    color: var(--text-primary) !important;
 }
