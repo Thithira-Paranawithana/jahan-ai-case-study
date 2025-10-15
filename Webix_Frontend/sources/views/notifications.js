@@ -20,6 +20,7 @@ export default class NotificationsView extends JetView {
 								autoheight: true,
 								borderless: true
 							},
+							{ height: 10 },
 							{
 								view: "form",
 								id: "notificationForm",
@@ -27,7 +28,7 @@ export default class NotificationsView extends JetView {
 									// Email Notifications Section
 									{ 
 										view: "template", 
-										template: "<h4>Email Notifications</h4>", 
+										template: "<h4 style='margin-bottom: 5px;'>Email Notifications</h4>", 
 										autoheight: true, 
 										borderless: true 
 									},
@@ -41,7 +42,7 @@ export default class NotificationsView extends JetView {
 											onChange: (newValue) => this.toggleEmailOptions(newValue)
 										}
 									},
-									{ height: 15 },
+									{ height: 8 },
 									{
 										id: "emailOptions",
 										hidden: prefs.emailEnabled === false,
@@ -53,14 +54,14 @@ export default class NotificationsView extends JetView {
 												name: "emailAccountActivity",
 												value: prefs.emailAccountActivity !== false ? 1 : 0
 											},
-											{ height: 8 },
+											{ height: 5 },
 											{
 												view: "checkbox",
 												labelRight: "Updates and announcements",
 												name: "emailUpdates",
 												value: prefs.emailUpdates !== false ? 1 : 0
 											},
-											{ height: 8 },
+											{ height: 5 },
 											{
 												view: "checkbox",
 												labelRight: "Weekly summary email",
@@ -71,10 +72,10 @@ export default class NotificationsView extends JetView {
 									},
 									
 									// Push Notifications Section
-									{ height: 30 },
+									{ height: 15 },
 									{ 
 										view: "template", 
-										template: "<h4>Push Notifications</h4>", 
+										template: "<h4 style='margin-bottom: 5px;'>Push Notifications</h4>", 
 										autoheight: true, 
 										borderless: true 
 									},
@@ -88,7 +89,7 @@ export default class NotificationsView extends JetView {
 											onChange: (newValue) => this.togglePushOptions(newValue)
 										}
 									},
-									{ height: 15 },
+									{ height: 8 },
 									{
 										id: "pushOptions",
 										hidden: prefs.pushEnabled === false,
@@ -100,20 +101,39 @@ export default class NotificationsView extends JetView {
 												name: "pushSecurityAlerts",
 												value: prefs.pushSecurityAlerts !== false ? 1 : 0
 											},
-											{ height: 8 },
+											{ height: 5 },
 											{
 												view: "checkbox",
 												labelRight: "System notifications",
 												name: "pushSystemNotifications",
 												value: prefs.pushSystemNotifications !== false ? 1 : 0
 											},
-											{ height: 8 },
+											{ height: 5 },
 											{
 												view: "checkbox",
 												labelRight: "Activity updates",
 												name: "pushActivityUpdates",
 												value: prefs.pushActivityUpdates || 0
 											}
+										]
+									},
+									
+									// Notification Frequency Section
+									{ height: 15 },
+									{ 
+										view: "template", 
+										template: "<h4 style='margin-bottom: 5px;'>Notification Frequency</h4>", 
+										autoheight: true, 
+										borderless: true 
+									},
+									{
+										view: "radio",
+										name: "frequency",
+										value: prefs.frequency || "instant",
+										options: [
+											{ id: "instant", value: "Instant (as they happen)" },
+											{ id: "hourly", value: "Hourly digest" },
+											{ id: "daily", value: "Daily digest" }
 										]
 									},
 									
@@ -158,6 +178,6 @@ export default class NotificationsView extends JetView {
 	}
 	
 	savePreferences() {
-		webix.message({ type: "success", text: "Preferences saved (functionality in next commits)" });
+		webix.message({ type: "success", text: "Preferences saved (save functionality coming soon)" });
 	}
 }
