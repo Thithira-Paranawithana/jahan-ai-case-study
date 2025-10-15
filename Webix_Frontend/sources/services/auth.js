@@ -124,6 +124,26 @@ class AuthService {
 		
 		return { success: true, preferences: preferences };
 	}
+
+	updatePrivacySettings(settings) {
+		const currentUser = this.getCurrentUser();
+		if (!currentUser) {
+			return { success: false, error: "Not authenticated" };
+		}
+	
+		// Update privacy settings
+		this.currentUser = { 
+			...currentUser, 
+			privacySettings: settings 
+		};
+		
+		//which storage to use
+		const storage = localStorage.getItem("currentUser") ? localStorage : sessionStorage;
+		storage.setItem("currentUser", JSON.stringify(this.currentUser));
+		
+		return { success: true, settings: settings };
+	}
+	
 	
 }
 
