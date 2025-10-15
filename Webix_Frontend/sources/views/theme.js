@@ -121,6 +121,32 @@ export default class ThemeView extends JetView {
                                                         }
                                                     },
 
+                                                    // Accent Color Section
+                                                    { height: 20 },
+                                                    { 
+                                                        view: "template", 
+                                                        template: "<h4 style='margin-bottom: 5px;'>Accent Color</h4>", 
+                                                        autoheight: true, 
+                                                        borderless: true 
+                                                    },
+                                                    {
+                                                        view: "template",
+                                                        template: "<p style='margin: 5px 0 10px 0; color: var(--text-secondary);'>Personalize the look of buttons and highlights.</p>",
+                                                        autoheight: true,
+                                                        borderless: true
+                                                    },
+                                                    {
+                                                        view: "colorpicker",
+                                                        id: "primaryColorPicker",
+                                                        name: "primaryColor",
+                                                        label: "Primary Color",
+                                                        labelWidth: 120,
+                                                        value: currentTheme.primaryColor || "#2196F3",
+                                                        on: {
+                                                            onChange: (newValue) => this.changePrimaryColor(newValue)
+                                                        }
+                                                    },
+
                                                     // High Contrast Section
                                                     { height: 20 },
                                                     { 
@@ -186,6 +212,10 @@ export default class ThemeView extends JetView {
 			]
 		};
 	}
+
+    changePrimaryColor(color) {
+        themeService.setPrimaryColor(color);
+    }
 	
 	changeTheme(mode) {
 		themeService.setThemeMode(mode);
@@ -240,6 +270,8 @@ export default class ThemeView extends JetView {
         this.$$("fontSizeSlider").setValue(defaultTheme.fontSize);
         this.$$("fontFamilySelector").setValue(defaultTheme.fontFamily);
         this.$$("highContrastSwitch").setValue(defaultTheme.highContrast ? 1 : 0);
+        this.$$("primaryColorPicker").setValue(defaultTheme.primaryColor);
+
         
         webix.message({ type: "info", text: "All theme settings reset to default" });
     }
