@@ -138,56 +138,63 @@ export default class NotificationsView extends JetView {
 									},
 									
 									// Notification Sound Section
-									{ height: 15 },
-									{ 
-										view: "template", 
-										template: "<h4 style='margin-bottom: 5px;'>Notification Sound</h4>", 
-										autoheight: true, 
-										borderless: true 
-									},
-									{
-										view: "checkbox",
-										labelRight: "Play sound for notifications",
-										name: "soundEnabled",
-										id: "soundEnabledCheckbox",
-										value: prefs.soundEnabled !== false ? 1 : 0,
-										on: {
-											onChange: (newValue) => this.toggleSoundOptions(newValue)
-										}
-									},
-									{ height: 8 },
-									{
-										id: "soundOptions",
-										hidden: prefs.soundEnabled === false,
-										padding: { left: 30 },
-										rows: [
-											{
-												cols: [
-													{
-														view: "combo",
-														label: "Sound",
-														name: "notificationSound",
-														id: "soundSelector",
-														labelWidth: 80,
-														value: prefs.notificationSound || "default",
-														options: [
-															{ id: "default", value: "Default" },
-															{ id: "bell", value: "Bell" },
-															{ id: "chime", value: "Chime" },
-															{ id: "pop", value: "Pop" },
-															{ id: "none", value: "Silent" }
-														]
-													},
-													{
-														view: "button",
-														value: "Preview",
-														width: 90,
-														click: () => this.previewSound()
-													}
-												]
-											}
-										]
-									},
+                                    { height: 15 },
+                                    { 
+                                        view: "template", 
+                                        template: "<h4 style='margin-bottom: 5px;'>Notification Sound</h4>", 
+                                        autoheight: true, 
+                                        borderless: true 
+                                    },
+                                    {
+                                        view: "checkbox",
+                                        labelRight: "Play sound for notifications",
+                                        name: "soundEnabled",
+                                        id: "soundEnabledCheckbox",
+                                        value: prefs.soundEnabled !== false ? 1 : 0,
+                                        on: {
+                                            onChange: (newValue) => this.toggleSoundOptions(newValue)
+                                        }
+                                    },
+                                    { height: 8 },
+                                    {
+                                        id: "soundOptions",
+                                        hidden: prefs.soundEnabled === false,
+                                        padding: { left: 30 },
+                                        rows: [
+                                            { 
+                                                view: "template", 
+                                                template: "<p style='margin: 0 0 8px 0; font-size: 13px; color: #666;'>Select notification tone:</p>", 
+                                                autoheight: true, 
+                                                borderless: true 
+                                            },
+                                            {
+                                                cols: [
+                                                    {
+                                                        view: "combo",
+                                                        name: "notificationSound",
+                                                        id: "soundSelector",
+                                                        width: 200,
+                                                        value: prefs.notificationSound || "default",
+                                                        options: [
+                                                            { id: "default", value: "🔊 Default" },
+                                                            { id: "bell", value: "🔔 Bell" },
+                                                            { id: "chime", value: "🎵 Chime" },
+                                                            { id: "pop", value: "🎶 Pop" },
+                                                            { id: "none", value: "🔇 Silent" }
+                                                        ]
+                                                    },
+                                                    {
+                                                        view: "button",
+                                                        value: "Preview",
+                                                        width: 90,
+                                                        click: () => this.previewSound()
+                                                    },
+                                                    {}
+                                                ]
+                                            }
+                                        ]
+                                    },
+
 									
 									{ height: 30 },
 									{
