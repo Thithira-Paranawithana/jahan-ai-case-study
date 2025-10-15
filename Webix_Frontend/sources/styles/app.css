@@ -1,26 +1,48 @@
 /* Simple global styles */
 body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .app_title .webix_el_label {
-	font-size: 18px;
-	font-weight: bold;
-	padding-left: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 15px;
 }
 
 .error_message {
-	padding-left: 150px;
-	margin-top: -10px;
-	margin-bottom: 5px;
+    padding-left: 150px;
+    margin-top: -10px;
+    margin-bottom: 5px;
 }
-.error_message .webix_inp_static {
-    color: red;
-    font-size: 12px;
-    font-style: italic;
-    background: none;
-    border: none;
-    box-shadow: none;
+
+/* Make everything responsive - simple and universal */
+.webix_view, .webix_el_box, .webix_control {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Allow text to wrap everywhere */
+.webix_label_right, .webix_radio_option, .webix_el_label {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Make radio buttons responsive */
+#frequencyRadio .webix_radio {
+    display: flex !important;
+    flex-wrap: wrap !important;
+}
+
+/* Stack radio buttons vertically on small screens */
+@media (max-width: 768px) {
+    #frequencyRadio .webix_radio {
+        flex-direction: column !important;
+    }
+    
+    #frequencyRadio .webix_radio_option {
+        margin-bottom: 8px !important;
+    }
 }

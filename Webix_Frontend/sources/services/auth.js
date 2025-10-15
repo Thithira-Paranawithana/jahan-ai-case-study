@@ -105,6 +105,26 @@ class AuthService {
 		
 		return { success: true, message: "Password changed successfully" };
 	}
+
+	updateNotificationPreferences(preferences) {
+		const currentUser = this.getCurrentUser();
+		if (!currentUser) {
+			return { success: false, error: "Not authenticated" };
+		}
+	
+		// Update notification preferences
+		this.currentUser = { 
+			...currentUser, 
+			notificationPreferences: preferences 
+		};
+		
+		//  which storage to use
+		const storage = localStorage.getItem("currentUser") ? localStorage : sessionStorage;
+		storage.setItem("currentUser", JSON.stringify(this.currentUser));
+		
+		return { success: true, preferences: preferences };
+	}
+	
 }
 
 export default new AuthService();
