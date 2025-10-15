@@ -52,11 +52,12 @@ export default class ThemeView extends JetView {
 														value: currentTheme.mode || "light",
 														options: [
 															{ id: "light", value: "☀️ Light" },
-															{ id: "dark", value: "🌙 Dark" }
-														],
-														on: {
-															onChange: (newValue) => this.changeTheme(newValue)
-														}
+															{ id: "dark", value: "🌙 Dark" },
+                                                            { id: "auto", value: "🔄 Auto" }
+                                                        ],
+                                                        on: {
+                                                            onChange: (newValue) => this.changeTheme(newValue)
+                                                        }
 													},
 													
 													{ height: 30 },
@@ -85,11 +86,27 @@ export default class ThemeView extends JetView {
 		};
 	}
 	
-	changeTheme(mode) {
-		// Apply theme immediately
-		themeService.setThemeMode(mode);
-		webix.message({ type: "success", text: `Switched to ${mode} theme`, expire: 2000 });
-	}
+	// changeTheme(mode) {
+	// 	// Apply theme immediately
+	// 	themeService.setThemeMode(mode);
+	// 	webix.message({ type: "success", text: `Switched to ${mode} theme`, expire: 2000 });
+	// }
+
+    changeTheme(mode) {
+        // Apply theme immediately
+        themeService.setThemeMode(mode);
+        
+        let message = "";
+        if (mode === "auto") {
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            message = `Auto mode enabled (currently ${prefersDark ? "dark" : "light"} based on system)`;
+        } else {
+            message = `Switched to ${mode} theme`;
+        }
+        
+        webix.message({ type: "success", text: message, expire: 2000 });
+    }
+    
 	
 	resetTheme() {
 		themeService.resetTheme();
