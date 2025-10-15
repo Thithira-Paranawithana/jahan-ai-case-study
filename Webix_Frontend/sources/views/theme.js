@@ -121,6 +121,45 @@ export default class ThemeView extends JetView {
                                                         }
                                                     },
 
+                                                    // High Contrast Section
+                                                    { height: 20 },
+                                                    { 
+                                                        view: "template", 
+                                                        template: "<h4 style='margin-bottom: 5px;'>Accessibility</h4>", 
+                                                        autoheight: true, 
+                                                        borderless: true 
+                                                    },
+                                                    {
+                                                        view: "template",
+                                                        template: "<p style='margin: 5px 0 10px 0; color: var(--text-secondary);'>Enable high contrast mode for better visibility.</p>",
+                                                        autoheight: true,
+                                                        borderless: true
+                                                    },
+                                                    {
+                                                        css: "privacy-setting-row",
+                                                        borderless: false,
+                                                        padding: 15,
+                                                        cols: [
+                                                            {
+                                                                view: "template",
+                                                                template: "<span style='line-height: 40px;'>High Contrast Mode</span>",
+                                                                borderless: true,
+                                                                autoheight: true
+                                                            },
+                                                            {
+                                                                view: "switch",
+                                                                name: "highContrast",
+                                                                id: "highContrastSwitch",
+                                                                value: currentTheme.highContrast ? 1 : 0,
+                                                                width: 60,
+                                                                on: {
+                                                                    onChange: (newValue) => this.toggleHighContrast(newValue)
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+
+
 													
 													{ height: 30 },
 													{
@@ -181,6 +220,16 @@ export default class ThemeView extends JetView {
         };
         webix.message({ type: "success", text: `Font: ${familyNames[family]}`, expire: 2000 });
     }
+
+    toggleHighContrast(enabled) {
+        themeService.setHighContrast(enabled);
+        webix.message({ 
+            type: "success", 
+            text: enabled ? "High contrast enabled" : "High contrast disabled", 
+            expire: 2000 
+        });
+    }
+    
     
     
 	
@@ -190,6 +239,7 @@ export default class ThemeView extends JetView {
         this.$$("themeModeSelector").setValue(defaultTheme.mode);
         this.$$("fontSizeSlider").setValue(defaultTheme.fontSize);
         this.$$("fontFamilySelector").setValue(defaultTheme.fontFamily);
+        this.$$("highContrastSwitch").setValue(defaultTheme.highContrast ? 1 : 0);
         
         webix.message({ type: "info", text: "All theme settings reset to default" });
     }
