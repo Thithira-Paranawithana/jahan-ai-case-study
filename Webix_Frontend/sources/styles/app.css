@@ -1,26 +1,91 @@
 /* Simple global styles */
 body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .app_title .webix_el_label {
-	font-size: 18px;
-	font-weight: bold;
-	padding-left: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 15px;
 }
 
 .error_message {
-	padding-left: 150px;
-	margin-top: -10px;
-	margin-bottom: 5px;
+    padding-left: 150px;
+    margin-top: -10px;
+    margin-bottom: 5px;
 }
-.error_message .webix_inp_static {
-    color: red;
-    font-size: 12px;
-    font-style: italic;
-    background: none;
-    border: none;
-    box-shadow: none;
+
+/* Notification Form Specific Styles */
+.notification-preferences-form {
+    overflow: visible !important;
+}
+
+.notification-preferences-form .webix_view,
+.notification-preferences-form .webix_el_box,
+.notification-preferences-form .webix_control {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+/* Allow text to wrap everywhere with proper spacing */
+.notification-preferences-form .webix_label_right,
+.notification-preferences-form .webix_radio_option,
+.notification-preferences-form .webix_el_label {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.6 !important;
+    padding: 4px 0 !important;
+}
+
+/* Add spacing between form elements to prevent overlap */
+.notification-preferences-form .webix_el_checkbox,
+.notification-preferences-form .webix_el_radio {
+    margin-bottom: 12px !important;
+    min-height: 30px !important;
+}
+
+/* Ensure checkbox and radio labels have proper spacing */
+.notification-preferences-form .webix_inp_checkbox_border,
+.notification-preferences-form .webix_inp_radio_border {
+    margin-top: 4px !important;
+    align-self: flex-start !important;
+}
+
+/* Force radio buttons container to be fully visible */
+.notification-preferences-form .webix_radio {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+    width: 100% !important;
+    min-height: 50px !important;
+}
+
+/* Radio button options should not shrink */
+.notification-preferences-form .webix_radio_option {
+    flex-shrink: 0 !important;
+    margin-right: 20px !important;
+    margin-bottom: 10px !important;
+    white-space: nowrap !important;
+}
+
+/* Ensure parent containers don't clip content */
+.notification-preferences-form .webix_scroll_cont {
+    overflow: visible !important;
+}
+
+/* Stack radio buttons vertically on smaller screens */
+@media (max-width: 900px) {
+    .notification-preferences-form .webix_radio {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    
+    .notification-preferences-form .webix_radio_option {
+        margin-right: 0 !important;
+        margin-bottom: 12px !important;
+    }
 }
