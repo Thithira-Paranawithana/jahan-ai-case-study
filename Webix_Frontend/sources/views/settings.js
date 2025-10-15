@@ -32,7 +32,7 @@ export default class SettingsView extends JetView {
 						},
 						{
 							id: "privacy",
-							template: "<div style='padding:30px'>Privacy settings and data management options.</div>"
+							 $subview: "privacy"
 						}
 					]
 				}
