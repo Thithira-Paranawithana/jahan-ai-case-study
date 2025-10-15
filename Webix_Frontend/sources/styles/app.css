@@ -554,3 +554,8 @@ body.high-contrast .webix_list_item:hover {
     border-left: 4px solid var(--primary-color) !important;
 }
 
+/* Delete Account Button */
+.delete-account-button button {
+    background-color: #dc2626 !important;
+    color: white !important;
+}

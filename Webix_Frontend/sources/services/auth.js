@@ -143,6 +143,25 @@ class AuthService {
 		
 		return { success: true, settings: settings };
 	}
+
+	deleteAccount() {
+		try {
+			// Remove user data
+			localStorage.removeItem("currentUser");
+			localStorage.removeItem("userTheme");
+			
+			return { 
+				success: true 
+			};
+		} catch (error) {
+			console.error("Delete account error:", error);
+			return { 
+				success: false, 
+				error: "Failed to delete account" 
+			};
+		}
+	}
+	
 	
 	
 }

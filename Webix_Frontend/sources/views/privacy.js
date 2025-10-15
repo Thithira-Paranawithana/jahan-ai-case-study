@@ -224,7 +224,6 @@ export default class PrivacyView extends JetView {
                                                                 value: "Delete Account",
                                                                 width: 150,
                                                                 css: "delete-account-button",
-                                                                style: "background-color: #dc2626 !important; color: white !important; border-color: #dc2626 !important;",
                                                                 click: () => this.confirmDeleteAccount()
                                                             },
                                                             {},
@@ -237,6 +236,7 @@ export default class PrivacyView extends JetView {
                                                             }
                                                         ]
                                                     }
+
 
 
 												]
@@ -306,5 +306,141 @@ export default class PrivacyView extends JetView {
             });
         }
     }
+
+    confirmDeleteAccount() {
+        webix.ui({
+            view: "window",
+            id: "deleteWarning1",
+            head: "⚠️ Delete Account",
+            modal: true,
+            position: "center",
+            width: 450,
+            body: {
+                padding: 20,
+                rows: [
+                    {
+                        view: "template",
+                        template: "Are you absolutely sure you want to delete your account?<br><br>This action cannot be undone and all your data will be permanently deleted.",
+                        autoheight: true,
+                        borderless: true
+                    },
+                    { height: 20 },
+                    {
+                        cols: [
+                            {},
+                            {
+                                view: "button",
+                                value: "Cancel",
+                                width: 100,
+                                click: () => {
+                                    webix.$$("deleteWarning1").close();
+                                    webix.message("Account deletion cancelled");
+                                }
+                            },
+                            {
+                                view: "button",
+                                value: "Yes, Delete My Account",
+                                width: 180,
+                                css: "delete-account-button",
+                                click: () => {
+                                    webix.$$("deleteWarning1").close();
+                                    this.finalDeleteConfirmation();
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }).show();
+    }
+    
+    finalDeleteConfirmation() {
+        webix.ui({
+            view: "window",
+            id: "deleteWarning2",
+            head: "🚨 Final Warning",
+            modal: true,
+            position: "center",
+            width: 500,
+            body: {
+                padding: 20,
+                rows: [
+                    {
+                        view: "template",
+                        template: "This is your last chance! Deleting your account will:<br><br>• Remove all your personal data<br>• Delete your profile permanently<br>• Cancel all subscriptions<br><br>Type <strong>DELETE</strong> in the box below to confirm:",
+                        autoheight: true,
+                        borderless: true
+                    },
+                    { height: 15 },
+                    {
+                        view: "text",
+                        id: "deleteConfirmInput",
+                        placeholder: "Type DELETE here"
+                    },
+                    { height: 20 },
+                    {
+                        cols: [
+                            {},
+                            {
+                                view: "button",
+                                value: "Cancel",
+                                width: 100,
+                                click: () => {
+                                    webix.$$("deleteWarning2").close();
+                                }
+                            },
+                            {
+                                view: "button",
+                                value: "DELETE MY ACCOUNT",
+                                width: 180,
+                                css: "delete-account-button",
+                                click: () => {
+                                    const input = webix.$$("deleteConfirmInput").getValue();
+                                    if (input === "DELETE") {
+                                        webix.$$("deleteWarning2").close();
+                                        this.deleteAccount();
+                                    } else {
+                                        webix.message({ 
+                                            type: "error", 
+                                            text: "You must type DELETE to confirm" 
+                                        });
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }).show();
+    }
+    
+    
+    deleteAccount() {
+        // Call auth service to delete account
+        const result = authService.deleteAccount();
+        
+        if (result && result.success) {
+            webix.message({ 
+                type: "success", 
+                text: "Your account has been deleted. Goodbye!",
+                expire: 2000
+            });
+            
+            // Logout and redirect to login
+            setTimeout(() => {
+                authService.logout();
+                this.show("/login");
+            }, 2000);
+        } else {
+            webix.message({ 
+                type: "error", 
+                text: result.error || "Failed to delete account",
+                expire: 4000
+            });
+        }
+    }
+    
+    
+    
     
 }
