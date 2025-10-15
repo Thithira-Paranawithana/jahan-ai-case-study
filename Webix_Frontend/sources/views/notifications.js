@@ -137,6 +137,58 @@ export default class NotificationsView extends JetView {
 										]
 									},
 									
+									// Notification Sound Section
+									{ height: 15 },
+									{ 
+										view: "template", 
+										template: "<h4 style='margin-bottom: 5px;'>Notification Sound</h4>", 
+										autoheight: true, 
+										borderless: true 
+									},
+									{
+										view: "checkbox",
+										labelRight: "Play sound for notifications",
+										name: "soundEnabled",
+										id: "soundEnabledCheckbox",
+										value: prefs.soundEnabled !== false ? 1 : 0,
+										on: {
+											onChange: (newValue) => this.toggleSoundOptions(newValue)
+										}
+									},
+									{ height: 8 },
+									{
+										id: "soundOptions",
+										hidden: prefs.soundEnabled === false,
+										padding: { left: 30 },
+										rows: [
+											{
+												cols: [
+													{
+														view: "combo",
+														label: "Sound",
+														name: "notificationSound",
+														id: "soundSelector",
+														labelWidth: 80,
+														value: prefs.notificationSound || "default",
+														options: [
+															{ id: "default", value: "Default" },
+															{ id: "bell", value: "Bell" },
+															{ id: "chime", value: "Chime" },
+															{ id: "pop", value: "Pop" },
+															{ id: "none", value: "Silent" }
+														]
+													},
+													{
+														view: "button",
+														value: "Preview",
+														width: 90,
+														click: () => this.previewSound()
+													}
+												]
+											}
+										]
+									},
+									
 									{ height: 30 },
 									{
 										cols: [
@@ -174,6 +226,44 @@ export default class NotificationsView extends JetView {
 			pushOptions.show();
 		} else {
 			pushOptions.hide();
+		}
+	}
+	
+	toggleSoundOptions(enabled) {
+		const soundOptions = this.$$("soundOptions");
+		if (enabled) {
+			soundOptions.show();
+		} else {
+			soundOptions.hide();
+		}
+	}
+	
+	previewSound() {
+		const soundSelector = this.$$("soundSelector");
+		const selectedSound = soundSelector.getValue();
+		
+		if (selectedSound === "none") {
+			webix.message("Silent mode - no sound");
+			return;
+		}
+		
+		// Sound URLs mapping
+		const soundUrls = {
+			default: "https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3",
+			bell: "https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3",
+			chime: "https://assets.mixkit.co/active_storage/sfx/2357/2357-preview.mp3",
+			pop: "https://assets.mixkit.co/active_storage/sfx/2356/2356-preview.mp3"
+		};
+		
+		const soundUrl = soundUrls[selectedSound];
+		
+		if (soundUrl) {
+			const audio = new Audio(soundUrl);
+			audio.volume = 0.5;
+			audio.play().catch(error => {
+				console.error("Error playing sound:", error);
+				webix.message({ type: "error", text: "Could not play sound preview" });
+			});
 		}
 	}
 	
