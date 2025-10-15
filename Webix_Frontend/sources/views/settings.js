@@ -28,11 +28,11 @@ export default class SettingsView extends JetView {
 						{ id: "notifications", $subview: "notifications" },
 						{
 							id: "theme",
-							template: "<div style='padding:30px'>Theme customization options will be available here.</div>"
+							$subview: "theme"
 						},
 						{
 							id: "privacy",
-							template: "<div style='padding:30px'>Privacy settings and data management options.</div>"
+							 $subview: "privacy"
 						}
 					]
 				}

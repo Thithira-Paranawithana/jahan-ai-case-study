@@ -34,7 +34,7 @@ export default class LoginView extends JetView {
 					labelPosition: "top", 
 					placeholder: "Enter your password",
 					css: "input_field",
-					value: "password123"  // demo
+					value: "Password@123"  // demo
 				},
 				{
 					view: "template",
