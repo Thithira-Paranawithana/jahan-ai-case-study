@@ -70,6 +70,53 @@ export default class NotificationsView extends JetView {
 										]
 									},
 									
+									// Push Notifications Section
+									{ height: 30 },
+									{ 
+										view: "template", 
+										template: "<h4>Push Notifications</h4>", 
+										autoheight: true, 
+										borderless: true 
+									},
+									{
+										view: "checkbox",
+										labelRight: "Enable Push Notifications",
+										name: "pushEnabled",
+										id: "pushEnabledCheckbox",
+										value: prefs.pushEnabled !== false ? 1 : 0,
+										on: {
+											onChange: (newValue) => this.togglePushOptions(newValue)
+										}
+									},
+									{ height: 15 },
+									{
+										id: "pushOptions",
+										hidden: prefs.pushEnabled === false,
+										padding: { left: 30 },
+										rows: [
+											{
+												view: "checkbox",
+												labelRight: "Security alerts (important account changes)",
+												name: "pushSecurityAlerts",
+												value: prefs.pushSecurityAlerts !== false ? 1 : 0
+											},
+											{ height: 8 },
+											{
+												view: "checkbox",
+												labelRight: "System notifications",
+												name: "pushSystemNotifications",
+												value: prefs.pushSystemNotifications !== false ? 1 : 0
+											},
+											{ height: 8 },
+											{
+												view: "checkbox",
+												labelRight: "Activity updates",
+												name: "pushActivityUpdates",
+												value: prefs.pushActivityUpdates || 0
+											}
+										]
+									},
+									
 									{ height: 30 },
 									{
 										cols: [
@@ -98,6 +145,15 @@ export default class NotificationsView extends JetView {
 			emailOptions.show();
 		} else {
 			emailOptions.hide();
+		}
+	}
+	
+	togglePushOptions(enabled) {
+		const pushOptions = this.$$("pushOptions");
+		if (enabled) {
+			pushOptions.show();
+		} else {
+			pushOptions.hide();
 		}
 	}
 	
