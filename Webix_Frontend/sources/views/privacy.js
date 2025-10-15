@@ -34,114 +34,164 @@ export default class PrivacyView extends JetView {
 												scroll: false,
 												elements: [
 													// Account Privacy Section
-													{ 
-														view: "template", 
-														template: "<h4 style='margin-bottom: 5px;'>Account Privacy</h4>", 
-														autoheight: true, 
-														borderless: true 
-													},
-													{
-														view: "segmented",
-														name: "profileVisibility",
-														value: privacy.profileVisibility || "public",
-														options: [
-															{ id: "public", value: "🌐 Public" },
-															{ id: "private", value: "🔒 Private" }
-														]
-													},
-													
+                                                    { 
+                                                        view: "template", 
+                                                        template: "<h4 style='margin-bottom: 5px;'>Account Privacy</h4>", 
+                                                        autoheight: true, 
+                                                        borderless: true 
+                                                    },
+                                                    {
+                                                        cols: [
+                                                            {
+                                                                view: "segmented",
+                                                                name: "profileVisibility",
+                                                                value: privacy.profileVisibility || "public",
+                                                                width: 250,
+                                                                options: [
+                                                                    { id: "public", value: "🌐 Public" },
+                                                                    { id: "private", value: "🔒 Private" }
+                                                                ]
+                                                            },
+                                                            {}
+                                                        ]
+                                                    },
+
 													// Online Status Section
-													{ height: 15 },
-													{ 
-														view: "template", 
-														template: "<h4 style='margin-bottom: 5px;'>Activity Status</h4>", 
-														autoheight: true, 
-														borderless: true 
-													},
-													{
-														cols: [
-															{
-																view: "template",
-																template: "<span style='line-height: 40px;'>Show when you're online</span>",
-																borderless: true,
-																autoheight: true
-															},
-															{
-																view: "switch",
-																name: "showOnlineStatus",
-																value: privacy.showOnlineStatus !== false ? 1 : 0,
-																width: 60
-															}
-														]
-													},
-													
-													// Data Sharing Section
-													{ height: 15 },
-													{ 
-														view: "template", 
-														template: "<h4 style='margin-bottom: 5px;'>Data & Analytics</h4>", 
-														autoheight: true, 
-														borderless: true 
-													},
-													{
-														cols: [
-															{
-																view: "template",
-																template: "<span style='line-height: 40px;'>Share usage data to improve the service</span>",
-																borderless: true,
-																autoheight: true
-															},
-															{
-																view: "switch",
-																name: "shareUsageData",
-																value: privacy.shareUsageData !== false ? 1 : 0,
-																width: 60
-															}
-														]
-													},
-													{ height: 10 },
-													{
-														cols: [
-															{
-																view: "template",
-																template: "<span style='line-height: 40px;'>Allow personalized recommendations</span>",
-																borderless: true,
-																autoheight: true
-															},
-															{
-																view: "switch",
-																name: "personalizedRecommendations",
-																value: privacy.personalizedRecommendations !== false ? 1 : 0,
-																width: 60
-															}
-														]
-													},
-													
-													// Search Visibility Section
-													{ height: 15 },
-													{ 
-														view: "template", 
-														template: "<h4 style='margin-bottom: 5px;'>Search & Discovery</h4>", 
-														autoheight: true, 
-														borderless: true 
-													},
-													{
-														cols: [
-															{
-																view: "template",
-																template: "<span style='line-height: 40px;'>Allow others to find you by email</span>",
-																borderless: true,
-																autoheight: true
-															},
-															{
-																view: "switch",
-																name: "searchByEmail",
-																value: privacy.searchByEmail !== false ? 1 : 0,
-																width: 60
-															}
-														]
-													},
-													
+{ height: 15 },
+{ 
+	view: "template", 
+	template: "<h4 style='margin-bottom: 5px;'>Activity Status</h4>", 
+	autoheight: true, 
+	borderless: true 
+},
+{
+	css: "privacy-setting-row",
+	borderless: false,
+	padding: 15,
+	cols: [
+		{
+			view: "template",
+			template: "<span style='line-height: 40px; font-size: 14px;'>Show when you're online</span>",
+			borderless: true,
+			autoheight: true
+		},
+		{
+			view: "switch",
+			name: "showOnlineStatus",
+			value: privacy.showOnlineStatus !== false ? 1 : 0,
+			width: 60
+		}
+	]
+},
+
+// Data Sharing Section
+{ height: 15 },
+{ 
+	view: "template", 
+	template: "<h4 style='margin-bottom: 5px;'>Data & Analytics</h4>", 
+	autoheight: true, 
+	borderless: true 
+},
+{
+	css: "privacy-setting-row",
+	borderless: false,
+	padding: 15,
+	cols: [
+		{
+			view: "template",
+			template: "<span style='line-height: 40px; font-size: 14px;'>Share usage data to improve the service</span>",
+			borderless: true,
+			autoheight: true
+		},
+		{
+			view: "switch",
+			name: "shareUsageData",
+			value: privacy.shareUsageData !== false ? 1 : 0,
+			width: 60
+		}
+	]
+},
+{ height: 1 },
+{
+	css: "privacy-setting-row",
+	borderless: false,
+	padding: 15,
+	cols: [
+		{
+			view: "template",
+			template: "<span style='line-height: 40px; font-size: 14px;'>Allow personalized recommendations</span>",
+			borderless: true,
+			autoheight: true
+		},
+		{
+			view: "switch",
+			name: "personalizedRecommendations",
+			value: privacy.personalizedRecommendations !== false ? 1 : 0,
+			width: 60
+		}
+	]
+},
+
+// Search Visibility Section
+{ height: 15 },
+{ 
+	view: "template", 
+	template: "<h4 style='margin-bottom: 5px;'>Search & Discovery</h4>", 
+	autoheight: true, 
+	borderless: true 
+},
+{
+	css: "privacy-setting-row",
+	borderless: false,
+	padding: 15,
+	cols: [
+		{
+			view: "template",
+			template: "<span style='line-height: 40px; font-size: 14px;'>Allow others to find you by email</span>",
+			borderless: true,
+			autoheight: true
+		},
+		{
+			view: "switch",
+			name: "searchByEmail",
+			value: privacy.searchByEmail !== false ? 1 : 0,
+			width: 60
+		}
+	]
+},
+
+// Two-Factor Authentication Section
+{ height: 15 },
+{ 
+	view: "template", 
+	template: "<h4 style='margin-bottom: 5px;'>Two-Factor Authentication</h4>", 
+	autoheight: true, 
+	borderless: true 
+},
+{
+	css: "privacy-setting-row",
+	borderless: false,
+	padding: 15,
+	cols: [
+		{
+			view: "template",
+			template: "<span style='line-height: 40px; font-size: 14px;'>Enable two-factor authentication (2FA)</span>",
+			borderless: true,
+			autoheight: true
+		},
+		{
+			view: "switch",
+			name: "twoFactorEnabled",
+			id: "twoFactorSwitch",
+			value: privacy.twoFactorEnabled || 0,
+			width: 60,
+			on: {
+				onChange: (newValue) => this.toggle2FAOptions(newValue)
+			}
+		}
+	]
+},
+
 													{ height: 30 },
 													{
 														cols: [
@@ -167,6 +217,15 @@ export default class PrivacyView extends JetView {
 				}
 			]
 		};
+	}
+	
+	toggle2FAOptions(enabled) {
+		const options = this.$$("twoFactorOptions");
+		if (enabled) {
+			options.show();
+		} else {
+			options.hide();
+		}
 	}
 	
 	savePrivacySettings() {
