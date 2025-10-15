@@ -238,10 +238,22 @@ export default class ThemeView extends JetView {
 		};
 	}
 
+    // changePrimaryColor(color) {
+    //     themeService.setPrimaryColor(color);
+    //     this.$$("colorPalette").refresh();
+    // }
+
     changePrimaryColor(color) {
         themeService.setPrimaryColor(color);
         this.$$("colorPalette").refresh();
+        
+        // Refresh header colors
+        const topView = this.getParentView().getParentView();
+        if (topView && topView.updateHeaderColors) {
+            topView.updateHeaderColors();
+        }
     }
+    
 	
 	changeTheme(mode) {
 		themeService.setThemeMode(mode);
@@ -297,7 +309,12 @@ export default class ThemeView extends JetView {
         this.$$("fontFamilySelector").setValue(defaultTheme.fontFamily);
         this.$$("highContrastSwitch").setValue(defaultTheme.highContrast ? 1 : 0);
         
-        this.$$("colorPalette").refresh(); // This line remains
+        this.$$("colorPalette").refresh(); 
+        // Refresh header colors
+        const topView = this.getParentView().getParentView();
+        if (topView && topView.updateHeaderColors) {
+            topView.updateHeaderColors();
+        }
         
         webix.message({ type: "info", text: "All theme settings reset to default" });
     }

@@ -94,7 +94,7 @@ export default class LoginView extends JetView {
 				<div class="brand_section">
 					<div class="brand_logo">
 						<span class="logo_icon">⚙️</span>
-						<h2>User Preferences</h2>
+						<h1>User Preferences App</h1>
 					</div>
 					<div class="brand_content">
 						<h3>Customize Your Experience</h3>
