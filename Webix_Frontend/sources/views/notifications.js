@@ -30,6 +30,7 @@ export default class NotificationsView extends JetView {
 											{
 												view: "form",
 												id: "notificationForm",
+                                                css: "notification-preferences-form",
 												scroll: false,
 												elements: [
 													// Email Notifications Section
@@ -146,25 +147,25 @@ export default class NotificationsView extends JetView {
 													},
 													
 													// Notification Sound Section
-													{ height: 15 },
-													{ 
-														view: "template", 
-														template: "<h4 style='margin-bottom: 5px;'>Notification Sound</h4>", 
-														autoheight: true, 
-														borderless: true 
-													},
-													{
-														view: "checkbox",
-														labelRight: "Play sound for notifications",
-														name: "soundEnabled",
-														id: "soundEnabledCheckbox",
-														value: prefs.soundEnabled !== false ? 1 : 0,
-														on: {
-															onChange: (newValue) => this.toggleSoundOptions(newValue)
-														}
-													},
-													{ height: 8 },
-													{
+                                                    { height: 15 },
+                                                    { 
+                                                        view: "template", 
+                                                        template: "<h4 style='margin-bottom: 5px;'>Notification Sound</h4>",
+                                                        autoheight: true, 
+                                                        borderless: true 
+                                                    },
+                                                    {
+                                                        view: "checkbox",
+                                                        labelRight: "Play sound for notifications",
+                                                        name: "soundEnabled",
+                                                        id: "soundEnabledCheckbox",
+                                                        value: prefs.soundEnabled !== false ? 1 : 0,
+                                                        on: {
+                                                            onChange: (newValue) => this.toggleSoundOptions(newValue)
+                                                        }
+                                                    },
+                                                    { height: 8 },
+                                                    {
 														id: "soundOptions",
 														hidden: prefs.soundEnabled === false,
 														padding: { left: 30 },
@@ -202,6 +203,7 @@ export default class NotificationsView extends JetView {
 															}
 														]
 													},
+
 													
 													{ height: 30 },
 													{
