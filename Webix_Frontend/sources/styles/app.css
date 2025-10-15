@@ -217,6 +217,8 @@ body {
     border-color: var(--text-secondary);
 }
 
+
+
 /* Theme Settings */
 .theme-settings-form {
     overflow: visible !important;
@@ -551,3 +553,4 @@ body.high-contrast .webix_list_item:hover {
     color: var(--primary-color) !important;
     border-left: 4px solid var(--primary-color) !important;
 }
+

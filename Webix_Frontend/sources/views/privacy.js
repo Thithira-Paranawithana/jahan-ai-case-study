@@ -219,6 +219,14 @@ export default class PrivacyView extends JetView {
                                                     { height: 30 },
                                                     {
                                                         cols: [
+                                                            {
+                                                                view: "button",
+                                                                value: "Delete Account",
+                                                                width: 150,
+                                                                css: "delete-account-button",
+                                                                style: "background-color: #dc2626 !important; color: white !important; border-color: #dc2626 !important;",
+                                                                click: () => this.confirmDeleteAccount()
+                                                            },
                                                             {},
                                                             {
                                                                 view: "button",
@@ -229,6 +237,7 @@ export default class PrivacyView extends JetView {
                                                             }
                                                         ]
                                                     }
+
 
 												]
 											}
