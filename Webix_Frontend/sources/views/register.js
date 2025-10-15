@@ -3,6 +3,11 @@ import "../styles/register.css";
 import authService from "../services/auth";
 
 export default class RegisterView extends JetView {
+	ready() {
+		// Remove authenticated class on login page
+		document.body.classList.remove("authenticated");
+	}
+	
 	config() {
 		const registerForm = {
 			view: "form",
@@ -102,11 +107,11 @@ export default class RegisterView extends JetView {
 				<div class="brand_section">
 					<div class="brand_logo">
 						<span class="logo_icon">⚙️</span>
-						<h2>User Preferences</h2>
+						<h1>User Preferences App</h1>
 					</div>
 					<div class="brand_content">
 						<h3>Join Us Today</h3>
-						<p>Manage your account settings, notifications, themes, and privacy preferences all in one place.</p>
+						<h4>Manage your account settings, notifications, themes, and privacy preferences all in one place.</h4>
 						<ul class="feature_list">
 							<li>✓ Personalized account settings</li>
 							<li>✓ Smart notification controls</li>
@@ -115,9 +120,9 @@ export default class RegisterView extends JetView {
 						</ul>
 					</div>
                     <div class="demo_credentials">
-						<p><strong>Demo Credentials:</strong></p>
-						<p>Email: john@example.com</p>
-						<p>Password: Password@123</p>
+						<h4><strong>Demo Credentials:</strong></h4>
+						<h4>Email: john@example.com</h4>
+						<h4>Password: Password@123</h4>
 					</div>
 				</div>
 			`

@@ -1,6 +1,15 @@
+
 import { JetView } from "webix-jet";
 import themeService from "../services/themeService";
 
+const predefinedColors = [
+    { id: 1, hex: "#267484" }, 
+    { id: 2, hex: "#36a6ff" }, 
+    { id: 3, hex: "#13505a" }, 
+    { id: 4, hex: "#619ad2" }, 
+    { id: 5, hex: "#24588c" }, 
+    { id: 6, hex: "#33618f" }, 
+];
 export default class ThemeView extends JetView {
 	config() {
 		const currentTheme = themeService.getCurrentTheme();
@@ -41,7 +50,7 @@ export default class ThemeView extends JetView {
 													},
 													{
 														view: "template",
-														template: "<p style='margin: 5px 0 10px 0; font-size: 13px; color: #666;'>Choose how the app looks to you.</p>",
+														template: "<p style='margin: 5px 0 10px 0; color: var(--text-secondary);'>Choose how the app looks to you.</p>",
 														autoheight: true,
 														borderless: true
 													},
@@ -53,23 +62,166 @@ export default class ThemeView extends JetView {
 														options: [
 															{ id: "light", value: "☀️ Light" },
 															{ id: "dark", value: "🌙 Dark" },
-                                                            { id: "auto", value: "🔄 Auto" }
+															{ id: "auto", value: "🔄 Auto" }
+														],
+														on: {
+															onChange: (newValue) => this.changeTheme(newValue)
+														}
+													},
+													
+													// Font Size Section with Slider
+                                                    { height: 20 },
+                                                    { 
+                                                        view: "template", 
+                                                        template: "<h4 style='margin-bottom: 5px;'>Font Size</h4>", 
+                                                        autoheight: true, 
+                                                        borderless: true 
+                                                    },
+                                                    {
+                                                        view: "template",
+                                                        template: "<p style='margin: 5px 0 10px 0; color: var(--text-secondary);'>Adjust text size for better readability.</p>",
+                                                        autoheight: true,
+                                                        borderless: true
+                                                    },
+                                                    {
+                                                        view: "slider",
+                                                        id: "fontSizeSlider",
+                                                        name: "fontSize",
+                                                        value: currentTheme.fontSize || 14,
+                                                        min: 12,
+                                                        max: 24,
+                                                        step: 2,
+                                                        title: webix.template("#value#px"),
+                                                        on: {
+                                                            onChange: (newValue) => this.changeFontSize(newValue),
+                                                            onSliding: (newValue) => this.changeFontSize(newValue)
+                                                        }
+                                                    },
+
+													
+													// Font Family Section
+                                                    { height: 20 },
+                                                    { 
+                                                        view: "template", 
+                                                        template: "<h4 style='margin-bottom: 5px;'>Font Style</h4>", 
+                                                        autoheight: true, 
+                                                        borderless: true 
+                                                    },
+                                                    {
+                                                        view: "template",
+                                                        template: "<p style='margin: 5px 0 10px 0; color: var(--text-secondary);'>Choose your preferred font family.</p>",
+                                                        autoheight: true,
+                                                        borderless: true
+                                                    },
+                                                    {
+                                                        view: "select",
+                                                        id: "fontFamilySelector",
+                                                        name: "fontFamily",
+                                                        value: currentTheme.fontFamily || "system",
+                                                        options: [
+                                                            { id: "system", value: "System Default (Recommended)" },
+                                                            { id: "sans-serif", value: "Sans-serif (Arial, Helvetica)" },
+                                                            { id: "serif", value: "Serif (Georgia, Times New Roman)" },
+                                                            { id: "monospace", value: "Monospace (Courier New)" }
                                                         ],
                                                         on: {
-                                                            onChange: (newValue) => this.changeTheme(newValue)
+                                                            onChange: (newValue) => this.changeFontFamily(newValue)
                                                         }
-													},
+                                                    },
+
+                                                    // Accent Color Section
+                                                    { height: 20 },
+                                                    {
+                                                        view: "layout", 
+                                                        css: "account-setting-card",
+                                                        rows: [ 
+                                                            { view: "template", template: "<h4>Accent Color</h4>", autoheight: true, borderless: true },
+                                                            {
+                                                                view: "template",
+                                                                template: "<p style='margin: 5px 0 10px 0; color: var(--text-secondary);'>Personalize the look of buttons and highlights.</p>",
+                                                                autoheight: true,
+                                                                borderless: true
+                                                            },
+                                                            // Color Palette
+                                                            {
+                                                                view: "dataview",
+                                                                id: "colorPalette",
+                                                                css: "color-palette-container",
+                                                                autoheight: true, // This is still needed
+                                                                xCount: 6,
+                                                                select: true,
+                                                                data: predefinedColors,
+                                                                type: {
+                                                                    width: "auto",
+                                                                    height: 40,
+                                                                    template: obj => {
+                                                                        const isSelected = obj.hex === themeService.getCurrentTheme().primaryColor;
+                                                                        return `<div class='color-swatch ${isSelected ? "selected" : ""}' style='background-color:${obj.hex};'></div>`;
+                                                                    }
+                                                                },
+                                                                on: {
+                                                                    onItemClick: (id) => {
+                                                                        const color = this.$$("colorPalette").getItem(id);
+                                                                        this.changePrimaryColor(color.hex);
+                                                                    }
+                                                                }
+                                                            },
+                                                            
+                                                        ]
+                                                    },
+
+                                                    // High Contrast Section
+                                                    { height: 20 },
+                                                    { 
+                                                        view: "template", 
+                                                        template: "<h4 style='margin-bottom: 5px;'>Accessibility</h4>", 
+                                                        autoheight: true, 
+                                                        borderless: true 
+                                                    },
+                                                    {
+                                                        view: "template",
+                                                        template: "<p style='margin: 5px 0 10px 0; color: var(--text-secondary);'>Enable high contrast mode for better visibility.</p>",
+                                                        autoheight: true,
+                                                        borderless: true
+                                                    },
+                                                    {
+                                                        css: "privacy-setting-row",
+                                                        borderless: false,
+                                                        padding: 15,
+                                                        cols: [
+                                                            {
+                                                                view: "template",
+                                                                template: "<span style='line-height: 40px;'>High Contrast Mode</span>",
+                                                                borderless: true,
+                                                                autoheight: true
+                                                            },
+                                                            {
+                                                                view: "switch",
+                                                                name: "highContrast",
+                                                                id: "highContrastSwitch",
+                                                                value: currentTheme.highContrast ? 1 : 0,
+                                                                width: 60,
+                                                                on: {
+                                                                    onChange: (newValue) => this.toggleHighContrast(newValue)
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+
+
 													
 													{ height: 30 },
 													{
 														cols: [
+                                                            {},
 															{
 																view: "button",
 																value: "Reset to Default",
 																width: 150,
+                                                                css: "webix_primary",
 																click: () => this.resetTheme()
 															},
-															{}
+															
 														]
 													}
 												]
@@ -85,29 +237,86 @@ export default class ThemeView extends JetView {
 			]
 		};
 	}
-	
-	
 
-    changeTheme(mode) {
-        // Apply theme immediately
-        themeService.setThemeMode(mode);
+    // changePrimaryColor(color) {
+    //     themeService.setPrimaryColor(color);
+    //     this.$$("colorPalette").refresh();
+    // }
+
+    changePrimaryColor(color) {
+        themeService.setPrimaryColor(color);
+        this.$$("colorPalette").refresh();
         
-        let message = "";
-        if (mode === "auto") {
-            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            message = `Auto mode enabled (currently ${prefersDark ? "dark" : "light"} based on system)`;
-        } else {
-            message = `Switched to ${mode} theme`;
+        // Refresh header colors
+        const topView = this.getParentView().getParentView();
+        if (topView && topView.updateHeaderColors) {
+            topView.updateHeaderColors();
         }
-        
-        webix.message({ type: "success", text: message, expire: 2000 });
     }
     
 	
-	resetTheme() {
-		themeService.resetTheme();
-		const selector = this.$$("themeModeSelector");
-		selector.setValue("light");
-		webix.message({ type: "info", text: "Theme reset to Light mode" });
+	changeTheme(mode) {
+		themeService.setThemeMode(mode);
+		
+		let message = "";
+		if (mode === "auto") {
+			const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+			message = `Auto mode enabled (currently ${prefersDark ? "dark" : "light"})`;
+		} else {
+			message = `Switched to ${mode} theme`;
+		}
+		
+		webix.message({ type: "success", text: message, expire: 2000 });
 	}
+	
+	changeFontSize(size) {
+        themeService.setFontSize(size);
+        // Trigger Webix to refresh all views
+        this.getRoot().refresh();
+    }
+    
+    changeFontFamily(family) {
+        themeService.setFontFamily(family);
+        // Trigger Webix to refresh all views
+        this.getRoot().refresh();
+        
+        const familyNames = {
+            "system": "System Default",
+            "sans-serif": "Sans-serif",
+            "serif": "Serif",
+            "monospace": "Monospace"
+        };
+        webix.message({ type: "success", text: `Font: ${familyNames[family]}`, expire: 2000 });
+    }
+
+    toggleHighContrast(enabled) {
+        themeService.setHighContrast(enabled);
+        webix.message({ 
+            type: "success", 
+            text: enabled ? "High contrast enabled" : "High contrast disabled", 
+            expire: 2000 
+        });
+    }
+    
+    
+    
+	
+	resetTheme() {
+        const defaultTheme = themeService.resetTheme();
+        
+        this.$$("themeModeSelector").setValue(defaultTheme.mode);
+        this.$$("fontSizeSlider").setValue(defaultTheme.fontSize);
+        this.$$("fontFamilySelector").setValue(defaultTheme.fontFamily);
+        this.$$("highContrastSwitch").setValue(defaultTheme.highContrast ? 1 : 0);
+        
+        this.$$("colorPalette").refresh(); 
+        // Refresh header colors
+        const topView = this.getParentView().getParentView();
+        if (topView && topView.updateHeaderColors) {
+            topView.updateHeaderColors();
+        }
+        
+        webix.message({ type: "info", text: "All theme settings reset to default" });
+    }
+    
 }

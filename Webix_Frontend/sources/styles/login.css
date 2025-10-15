@@ -5,7 +5,7 @@
 }
 
 .login_left_panel {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #619ad2 0%, #041f39 100%); 
     color: white;
     display: flex;
     align-items: center;
@@ -143,7 +143,7 @@
 }
 
 .forgot-link {
-    color: #667eea;
+    color: #33618f;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
@@ -209,7 +209,7 @@
 }
 
 .signup-link {
-    color: #667eea;
+    color: #33618f;
     font-weight: 600;
     text-decoration: none;
     transition: color 0.2s ease;
