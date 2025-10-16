@@ -59,6 +59,7 @@ export default class ThemeView extends JetView {
 														name: "themeMode",
 														id: "themeModeSelector",
 														value: currentTheme.mode || "light",
+                                                        
 														options: [
 															{ id: "light", value: "☀️ Light" },
 															{ id: "dark", value: "🌙 Dark" },

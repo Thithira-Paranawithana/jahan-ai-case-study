@@ -4,18 +4,27 @@
   "description": "Webix Jet App",
   "main": "sources/myapp.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint sources/",
-    "build": "vite build",
-    "start": "vite"
+  "test": "jest --config=test/config/jest.config.js",
+  "test:watch": "jest --config=test/config/jest.config.js --watch",
+  "test:coverage": "jest --config=test/config/jest.config.js --coverage",
+  "test:auth": "jest --config=test/config/jest.config.js test/unit/authService.test.js",
+  "lint": "eslint sources/",
+  "build": "vite build",
+  "start": "vite"
   },
+
   "keywords": [
     "webix",
     "jet"
   ],
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@testing-library/jest-dom": "^6.9.1",
+    "babel-jest": "^30.2.0",
     "eslint": "^8.41.0",
+    "jest": "^30.2.0",
     "vite": "^7.1.10"
   },
   "dependencies": {

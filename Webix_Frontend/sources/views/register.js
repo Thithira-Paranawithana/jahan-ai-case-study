@@ -315,7 +315,7 @@ export default class RegisterView extends JetView {
 				<div class="brand_section">
 					<div class="brand_logo">
 						<span class="logo_icon">⚙️</span>
-						<h1>User Preferences App</h1>
+						<h1>USER PREFERENCES</h1>
 					</div>
 					<div class="brand_content">
 						<h3>Join Us Today</h3>
