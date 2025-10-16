@@ -133,3 +133,41 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         
         return data
 
+
+class ChangePasswordSerializer(serializers.Serializer):
+
+    current_password = serializers.CharField(required=True, write_only=True)
+    new_password = serializers.CharField(required=True, write_only=True, min_length=8)
+    confirm_password = serializers.CharField(required=True, write_only=True)
+    
+    def validate_current_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("Current password is incorrect.")
+        return value
+    
+    def validate_new_password(self, value):
+        """Validate new password strength"""
+        from django.contrib.auth.password_validation import validate_password
+        from django.core.exceptions import ValidationError as DjangoValidationError
+        
+        try:
+            validate_password(value)
+        except DjangoValidationError as e:
+            raise serializers.ValidationError(list(e.messages))
+        return value
+    
+    def validate(self, data):
+        # Check if new password matches confirmation
+        if data['new_password'] != data['confirm_password']:
+            raise serializers.ValidationError({
+                'confirm_password': 'New password and confirmation do not match.'
+            })
+        
+        # Check if new password is same as current
+        if data['current_password'] == data['new_password']:
+            raise serializers.ValidationError({
+                'new_password': 'New password must be different from current password.'
+            })
+        
+        return data

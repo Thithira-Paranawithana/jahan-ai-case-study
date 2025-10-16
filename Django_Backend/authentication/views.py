@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
-from .serializers import UserRegistrationSerializer, UserSerializer, UserUpdateSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserUpdateSerializer, ChangePasswordSerializer  
 
 User = get_user_model()
 
@@ -172,3 +172,35 @@ class UserProfileView(APIView):
             'user': UserSerializer(request.user).data
         }, status=status.HTTP_200_OK)
 
+
+class ChangePasswordView(APIView):
+   
+    # Change user password
+    # POST /api/auth/change-password/
+    # Body: {
+    #     "current_password": "OldPass@123",
+    #     "new_password": "NewPass@456",
+    #     "confirm_password": "NewPass@456"
+    # }
+    
+    def post(self, request):
+        serializer = ChangePasswordSerializer(
+            data=request.data, 
+            context={'request': request}
+        )
+        
+        if not serializer.is_valid():
+            return Response({
+                'success': False,
+                'errors': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Update password
+        user = request.user
+        user.set_password(serializer.validated_data['new_password'])
+        user.save()
+        
+        return Response({
+            'success': True,
+            'message': 'Password changed successfully'
+        }, status=status.HTTP_200_OK)
