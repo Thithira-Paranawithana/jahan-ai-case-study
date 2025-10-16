@@ -8,10 +8,12 @@
   "test:watch": "jest --config=test/config/jest.config.js --watch",
   "test:coverage": "jest --config=test/config/jest.config.js --coverage",
   "test:auth": "jest --config=test/config/jest.config.js test/unit/authService.test.js",
+  "test:api": "jest --config=test/config/jest.config.js test/unit/api.test.js",
   "lint": "eslint sources/",
   "build": "vite build",
   "start": "vite"
   },
+
 
   "keywords": [
     "webix",
