@@ -113,3 +113,18 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         if value and value not in valid_choices:
             raise serializers.ValidationError(f"Gender must be one of: {', '.join(valid_choices)}")
         return value
+    
+    def validate(self, data):
+       
+        # Get existing values from instance if doing partial update
+        phone = data.get('phone', self.instance.phone if self.instance else None)
+        country_code = data.get('country_code', self.instance.country_code if self.instance else None)
+        
+        # Both must be provided together or both must be null
+        if (phone and not country_code) or (country_code and not phone):
+            raise serializers.ValidationError({
+                'phone': 'Phone number and country code must be provided together.',
+                'country_code': 'Phone number and country code must be provided together.'
+            })
+        
+        return data
