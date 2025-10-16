@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
-from .serializers import UserRegistrationSerializer, UserSerializer, UserUpdateSerializer, ChangePasswordSerializer  
+from .serializers import UserRegistrationSerializer, UserSerializer, UserUpdateSerializer, ChangePasswordSerializer, DeleteAccountSerializer  
 
 User = get_user_model()
 
@@ -204,3 +204,50 @@ class ChangePasswordView(APIView):
             'success': True,
             'message': 'Password changed successfully'
         }, status=status.HTTP_200_OK)
+
+
+class DeleteAccountView(APIView):
+    
+    # Permanently delete user account 
+    # DELETE /api/auth/delete-account/
+   
+    # Body: {
+    #     "password": "UserPassword@123",
+    #     "confirmation": "DELETE"
+    # }
+    
+    
+    def delete(self, request):
+        serializer = DeleteAccountSerializer(
+            data=request.data,
+            context={'request': request}
+        )
+        
+        if not serializer.is_valid():
+            return Response({
+                'success': False,
+                'errors': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Get user before deletion
+        user = request.user
+        user_email = user.email  
+        
+        # blacklist refresh token if provided
+        refresh_token = request.data.get('refresh_token')
+        if refresh_token:
+            try:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+            except:
+                pass  
+        
+        # delete user from database
+        user.delete()
+        
+        return Response({
+            'success': True,
+            'message': f'Account {user_email} has been permanently deleted'
+        }, status=status.HTTP_200_OK)
+
+

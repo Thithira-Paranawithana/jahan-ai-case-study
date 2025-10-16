@@ -171,3 +171,19 @@ class ChangePasswordSerializer(serializers.Serializer):
             })
         
         return data
+
+
+class DeleteAccountSerializer(serializers.Serializer):
+    password = serializers.CharField(required=True, write_only=True)
+    confirmation = serializers.CharField(required=True, write_only=True)
+    
+    def validate_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("Password is incorrect.")
+        return value
+    
+    def validate_confirmation(self, value):
+        if value.strip().upper() != "DELETE":
+            raise serializers.ValidationError("Please type 'DELETE' to confirm account deletion.")
+        return value
