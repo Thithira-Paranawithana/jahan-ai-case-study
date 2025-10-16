@@ -429,6 +429,7 @@ class AuthService {
 			});
 	
 			if (response.success && response.data.success) {
+				console.log('Updated successfully');
 				// Transform backend response to frontend format
 				const user = transformUserFromBackend(response.data.user);
 				this.currentUser = user;
@@ -463,10 +464,63 @@ class AuthService {
 	}
 	
 
-    async changePassword(currentPassword, newPassword, confirmPassword) {
-        
-        return { success: false, error: 'Not implemented yet' };
-    }
+    /**
+	 * Change user password
+	 * @param {string} currentPassword 
+	 * @param {string} newPassword 
+	 * @param {string} confirmPassword 
+	 * @returns {Promise<Object>}
+	 */
+	async changePassword(currentPassword, newPassword, confirmPassword) {
+		console.log('Changing password');
+		
+		try {
+			const response = await apiRequest(API_CONFIG.ENDPOINTS.CHANGE_PASSWORD, {
+				method: 'POST',
+				body: JSON.stringify({
+					current_password: currentPassword,
+					new_password: newPassword,
+					confirm_password: confirmPassword
+				})
+			});
+
+			if (response.success && response.data.success) {
+				console.log('Password changed successfully');
+				
+				return { 
+					success: true, 
+					message: response.data.message || 'Password changed successfully'
+				};
+			} else {
+				console.warn('Password change failed:', response.data.errors || response.data.error);
+				
+				// Handle validation errors
+				if (response.data.errors) {
+					// Extract first error message
+					const firstField = Object.keys(response.data.errors)[0];
+					const errorMessage = response.data.errors[firstField][0];
+					
+					return { 
+						success: false, 
+						error: errorMessage,
+						errors: response.data.errors
+					};
+				}
+				
+				return { 
+					success: false, 
+					error: response.data.error || 'Failed to change password' 
+				};
+			}
+		} catch (error) {
+			console.error('Change password error:', error);
+			return { 
+				success: false, 
+				error: error.message || 'An error occurred while changing password' 
+			};
+		}
+	}
+
 
     async deleteAccount(password, confirmation) {
         return { success: false, error: 'Not implemented yet' };
