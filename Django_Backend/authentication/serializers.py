@@ -50,9 +50,19 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Serializer for user data (used in responses)"""
+    """Serializer for user data """
     
     class Meta:
         model = User
-        fields = ('id', 'email', 'full_name', 'date_joined')
+        fields = (
+            'id', 
+            'email', 
+            'full_name', 
+            'country', 
+            'country_code', 
+            'phone', 
+            'date_of_birth', 
+            'gender', 
+            'date_joined'
+        )
         read_only_fields = ('id', 'email', 'date_joined')

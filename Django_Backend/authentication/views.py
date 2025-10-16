@@ -107,8 +107,6 @@ class LogoutView(APIView):
     # User logout endpoint (blacklist refresh token)
     # POST /api/auth/logout/
     # Body: {"refresh_token": "<token>"}
-    # Headers: Authorization: Bearer <access_token>
-    
     
     def post(self, request):
         try:
@@ -134,3 +132,17 @@ class LogoutView(APIView):
                 'success': False,
                 'error': 'Invalid or expired token'
             }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserProfileView(APIView):
+    
+    # Get user's information
+    # GET /api/auth/profile/   
+    
+    def get(self, request):
+        """Retrieve user profile"""
+        serializer = UserSerializer(request.user)
+        return Response({
+            'success': True,
+            'user': serializer.data
+        }, status=status.HTTP_200_OK)
