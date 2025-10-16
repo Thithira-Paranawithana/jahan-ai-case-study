@@ -115,16 +115,21 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         return value
     
     def validate(self, data):
-       
-        # Get existing values from instance if doing partial update
+   
+        # Cross-field validation for phone and country code
+        # Both must be provided together, or both must be null/empty
+    
         phone = data.get('phone', self.instance.phone if self.instance else None)
         country_code = data.get('country_code', self.instance.country_code if self.instance else None)
+               
+        phone_exists = phone is not None and phone != ''
+        code_exists = country_code is not None and country_code != ''
         
-        # Both must be provided together or both must be null
-        if (phone and not country_code) or (country_code and not phone):
+        if phone_exists != code_exists:  # XOR 
             raise serializers.ValidationError({
-                'phone': 'Phone number and country code must be provided together.',
-                'country_code': 'Phone number and country code must be provided together.'
+                'phone': 'Phone number and country code must be provided together or both left empty.',
+                'country_code': 'Phone number and country code must be provided together or both left empty.'
             })
         
         return data
+

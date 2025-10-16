@@ -106,8 +106,7 @@ class LogoutView(APIView):
     
     # User logout endpoint 
     # POST /api/auth/logout/
-    # Body: {"refresh_token": "your_refresh_token_here"}
-   
+    # Body: {"refresh_token": "refresh_token_here"}
     
     def post(self, request):
         try:
@@ -122,13 +121,6 @@ class LogoutView(APIView):
             # blacklist the refresh token
             token = RefreshToken(refresh_token)
             token.blacklist()
-            
-            # Also blacklist the access token
-            from rest_framework_simplejwt.tokens import AccessToken
-            access_token_str = request.META.get('HTTP_AUTHORIZATION', '').split(' ')[-1]
-            if access_token_str:
-                access_token = AccessToken(access_token_str)
-                access_token.blacklist()
             
             return Response({
                 'success': True,
