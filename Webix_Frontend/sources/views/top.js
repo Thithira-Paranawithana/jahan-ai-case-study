@@ -390,10 +390,10 @@ export default class TopView extends JetView{
 			console.log('Logout successful, redirecting to login');
 			
 			// Force full page reload to login page 
-			// setTimeout(() => {
+			setTimeout(() => {
 				window.location.href = window.location.origin + window.location.pathname + '#!\/login';
 				// window.location.reload();
-			// }, 0);
+			}, 500);
 			
 		} catch (error) {
 			console.error('Logout error:', error);

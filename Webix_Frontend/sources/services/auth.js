@@ -522,9 +522,63 @@ class AuthService {
 	}
 
 
-    async deleteAccount(password, confirmation) {
-        return { success: false, error: 'Not implemented yet' };
-    }
+    /**
+	 * Delete user account (permanent deletion)
+	 * @param {string} password - User's password for confirmation
+	 * @param {string} confirmation - Must be "DELETE"
+	 * @returns {Promise<Object>}
+	 */
+	async deleteAccount(password, confirmation) {
+		console.log('Deleting account');
+		
+		try {
+			const tokens = getTokens();
+			
+			const response = await apiRequest(API_CONFIG.ENDPOINTS.DELETE_ACCOUNT, {
+				method: 'DELETE',
+				body: JSON.stringify({
+					password: password,
+					confirmation: confirmation,
+					refresh_token: tokens?.refresh
+				})
+			});
+
+			if (response.success && response.data.success) {
+				console.log('Account deleted successfully');
+				
+				// Clear all local data
+				this.currentUser = null;
+				clearTokens();
+				
+				return { 
+					success: true, 
+					message: response.data.message || 'Account deleted successfully'
+				};
+			} else {
+				console.warn('Account deletion failed:', response.data.errors || response.data.error);
+				
+				// Handle validation errors
+				if (response.data.errors) {
+					return { 
+						success: false, 
+						errors: response.data.errors
+					};
+				}
+				
+				return { 
+					success: false, 
+					error: response.data.error || 'Failed to delete account' 
+				};
+			}
+		} catch (error) {
+			console.error('Delete account error:', error);
+			return { 
+				success: false, 
+				error: error.message || 'An error occurred while deleting account' 
+			};
+		}
+	}
+
 
     // Keep these for backwards compatibility (notifications/privacy stored locally for now)
     updateNotificationPreferences(preferences) {

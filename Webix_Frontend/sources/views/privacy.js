@@ -367,15 +367,26 @@ export default class PrivacyView extends JetView {
                 rows: [
                     {
                         view: "template",
-                        template: "This is your last chance! Deleting your account will:<br><br>• Remove all your personal data<br>• Delete your profile permanently<br>• Cancel all subscriptions<br><br>Type <strong>DELETE</strong> in the box below to confirm:",
+                        template: "This is your last chance! Deleting your account will:<br><br>• Remove all your personal data<br>• Delete your profile permanently<br>• Cancel all subscriptions<br><br><strong>Enter your password and type DELETE to confirm:</strong>",
                         autoheight: true,
                         borderless: true
                     },
                     { height: 15 },
                     {
                         view: "text",
+                        type: "password",
+                        id: "deletePasswordInput",
+                        placeholder: "Enter your password",
+                        label: "Password",
+                        labelPosition: "top"
+                    },
+                    { height: 10 },
+                    {
+                        view: "text",
                         id: "deleteConfirmInput",
-                        placeholder: "Type DELETE here"
+                        placeholder: "Type DELETE here",
+                        label: "Confirmation",
+                        labelPosition: "top"
                     },
                     { height: 20 },
                     {
@@ -395,16 +406,28 @@ export default class PrivacyView extends JetView {
                                 width: 180,
                                 css: "delete-account-button",
                                 click: () => {
-                                    const input = webix.$$("deleteConfirmInput").getValue();
-                                    if (input === "DELETE") {
-                                        webix.$$("deleteWarning2").close();
-                                        this.deleteAccount();
-                                    } else {
+                                    const password = webix.$$("deletePasswordInput").getValue();
+                                    const confirmation = webix.$$("deleteConfirmInput").getValue();
+                                    
+                                    // Validation
+                                    if (!password) {
+                                        webix.message({ 
+                                            type: "error", 
+                                            text: "Please enter your password" 
+                                        });
+                                        return;
+                                    }
+                                    
+                                    if (confirmation !== "DELETE") {
                                         webix.message({ 
                                             type: "error", 
                                             text: "You must type DELETE to confirm" 
                                         });
+                                        return;
                                     }
+                                    
+                                    webix.$$("deleteWarning2").close();
+                                    this.deleteAccount(password, confirmation);
                                 }
                             }
                         ]
@@ -414,10 +437,16 @@ export default class PrivacyView extends JetView {
         }).show();
     }
     
-    
-    deleteAccount() {
-        // Call auth service to delete account
-        const result = authService.deleteAccount();
+    async deleteAccount(password, confirmation) {
+        console.log('Attempting to delete account...');
+        
+        // Show loading
+        const loadingMessage = webix.message({ type: "info", text: "Deleting account..." });
+        
+        // Call auth service with password and confirmation
+        const result = await authService.deleteAccount(password, confirmation);
+        
+        webix.message.hide(loadingMessage);
         
         if (result && result.success) {
             webix.message({ 
@@ -426,19 +455,34 @@ export default class PrivacyView extends JetView {
                 expire: 2000
             });
             
-            // Logout and redirect to login
+            // Redirect to login after brief delay
             setTimeout(() => {
-                authService.logout();
-                this.show("/login");
+                window.location.href = window.location.origin + window.location.pathname + '#!/login';
+                // window.location.reload();
             }, 2000);
         } else {
+            // Show specific error message
+            let errorMessage = "Failed to delete account";
+            
+            if (result.errors) {
+                // Handle backend validation errors
+                if (result.errors.password) {
+                    errorMessage = result.errors.password[0];
+                } else if (result.errors.confirmation) {
+                    errorMessage = result.errors.confirmation[0];
+                }
+            } else if (result.error) {
+                errorMessage = result.error;
+            }
+            
             webix.message({ 
                 type: "error", 
-                text: result.error || "Failed to delete account",
+                text: errorMessage,
                 expire: 4000
             });
         }
     }
+    
     
     
     
