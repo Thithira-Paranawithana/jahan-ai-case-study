@@ -7,7 +7,6 @@ User = get_user_model()
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    """Serializer for user registration"""
     password = serializers.CharField(
         write_only=True,
         required=True,
@@ -20,19 +19,16 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ('email', 'full_name', 'password')
     
     def validate_email(self, value):
-        """Validate email format and uniqueness"""
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("A user with this email already exists.")
         return value.lower()
     
     def validate_full_name(self, value):
-        """Validate full name"""
         if len(value.strip()) < 2:
             raise serializers.ValidationError("Full name must be at least 2 characters long.")
         return value.strip()
     
     def validate_password(self, value):
-        """Validate password strength"""
         try:
             validate_password(value)
         except DjangoValidationError as e:
@@ -40,7 +36,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return value
     
     def create(self, validated_data):
-        """Create and return user"""
         user = User.objects.create_user(
             email=validated_data['email'],
             full_name=validated_data['full_name'],
@@ -50,7 +45,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Serializer for user data """
     
     class Meta:
         model = User
@@ -66,3 +60,56 @@ class UserSerializer(serializers.ModelSerializer):
             'date_joined'
         )
         read_only_fields = ('id', 'email', 'date_joined')
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = User
+        fields = ('full_name', 'country', 'country_code', 'phone', 'date_of_birth', 'gender')
+    
+    def validate_full_name(self, value):
+        if value and len(value.strip()) < 2:
+            raise serializers.ValidationError("Full name must be at least 2 characters long.")
+        return value.strip() if value else value
+    
+    def validate_phone(self, value):
+        if value:
+            # Remove spaces and dashes for validation
+            cleaned = value.replace(' ', '').replace('-', '')
+            if not cleaned.isdigit():
+                raise serializers.ValidationError("Phone number must contain only digits, spaces, or dashes.")
+            if len(cleaned) < 7 or len(cleaned) > 15:
+                raise serializers.ValidationError("Phone number must be between 7 and 15 digits.")
+        return value
+    
+    def validate_country_code(self, value):
+        if value:
+            if not value.startswith('+'):
+                raise serializers.ValidationError("Country code must start with '+'")
+            cleaned = value[1:]  # Remove +
+            if not cleaned.isdigit():
+                raise serializers.ValidationError("Country code must be in format '+1' or '+91'")
+            if len(cleaned) < 1 or len(cleaned) > 4:
+                raise serializers.ValidationError("Country code must be between 1 and 4 digits.")
+        return value
+    
+    def validate_date_of_birth(self, value):
+        if value:
+            from datetime import date
+            today = date.today()
+            age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
+            
+            if value > today:
+                raise serializers.ValidationError("Date of birth cannot be in the future.")
+            if age < 13:
+                raise serializers.ValidationError("You must be at least 13 years old.")
+            if age > 120:
+                raise serializers.ValidationError("Please enter a valid date of birth.")
+        return value
+    
+    def validate_gender(self, value):
+        valid_choices = ['male', 'female', 'prefer_not_to_say']
+        if value and value not in valid_choices:
+            raise serializers.ValidationError(f"Gender must be one of: {', '.join(valid_choices)}")
+        return value

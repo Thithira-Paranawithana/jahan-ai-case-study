@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
-from .serializers import UserRegistrationSerializer, UserSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserUpdateSerializer
 
 User = get_user_model()
 
@@ -134,10 +134,13 @@ class LogoutView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
 
+from .serializers import UserRegistrationSerializer, UserSerializer, UserUpdateSerializer
+
 class UserProfileView(APIView):
-    
-    # Get user's information
-    # GET /api/auth/profile/   
+   
+    # Get and update user's profile
+    # GET /api/auth/profile/ - Get user profile
+    # PUT /api/auth/profile/ - Update user profile   
     
     def get(self, request):
         """Retrieve user profile"""
@@ -146,3 +149,27 @@ class UserProfileView(APIView):
             'success': True,
             'user': serializer.data
         }, status=status.HTTP_200_OK)
+    
+    def put(self, request):
+        """Update user profile"""
+        serializer = UserUpdateSerializer(
+            request.user, 
+            data=request.data, 
+            partial=True  # allow partial updates
+        )
+        
+        if not serializer.is_valid():
+            return Response({
+                'success': False,
+                'errors': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer.save()
+        
+        # Return updated user data
+        return Response({
+            'success': True,
+            'message': 'Profile updated successfully',
+            'user': UserSerializer(request.user).data
+        }, status=status.HTTP_200_OK)
+
