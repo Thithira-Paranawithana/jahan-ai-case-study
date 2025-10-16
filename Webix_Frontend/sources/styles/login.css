@@ -1,4 +1,3 @@
-/* Login Layout - Two Column Structure */
 .login_layout {
     height: 100vh;
     background: #f5f7fa;
@@ -107,7 +106,6 @@
     margin-bottom: 6px;
 }
 
-/* Remember Me and Forgot Password  */
 .remember_forgot_wrapper {
     margin: 15px 0 !important;
 }

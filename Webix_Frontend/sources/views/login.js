@@ -172,9 +172,8 @@ export default class LoginView extends JetView {
             return;
         }
 
-        this.getRoot().$view.querySelector(".password-toggle-icon").addEventListener("click", () => {
-            this.togglePasswordVisibility();
-        });
+        // Attach password toggle event listener
+        this.attachPasswordToggle();
         
         setTimeout(() => {
             if (this.$$("loginEmailField")) {
@@ -183,23 +182,54 @@ export default class LoginView extends JetView {
         }, 100);
     }
 
+    attachPasswordToggle() {
+        // Use setTimeout to ensure DOM is ready
+        setTimeout(() => {
+            const icon = this.getRoot().$view.querySelector(".password-toggle-icon");
+            if (icon) {
+                // Remove old listener if exists
+                icon.replaceWith(icon.cloneNode(true));
+                
+                // Get the new node and attach listener
+                const newIcon = this.getRoot().$view.querySelector(".password-toggle-icon");
+                newIcon.addEventListener("click", () => {
+                    this.togglePasswordVisibility();
+                });
+            }
+        }, 50);
+    }
+
     togglePasswordVisibility() {
         const field = this.$$("loginPasswordField");
-        const icon = this.getRoot().$view.querySelector(".password-toggle-icon");
+        
+        if (!field) return;
         
         const isPassword = field.config.type === "password";
 
         if (isPassword) {
             field.define("type", "text");
-            icon.classList.remove("wxi-eye");
-            icon.classList.add("wxi-eye-slash");
         } else {
             field.define("type", "password");
-            icon.classList.remove("wxi-eye-slash");
-            icon.classList.add("wxi-eye");
         }
         
         field.refresh();
+        
+        // Re-attach event listener after refresh (since DOM is rebuilt)
+        this.attachPasswordToggle();
+        
+        // Update icon class
+        setTimeout(() => {
+            const icon = this.getRoot().$view.querySelector(".password-toggle-icon");
+            if (icon) {
+                if (isPassword) {
+                    icon.classList.remove("wxi-eye");
+                    icon.classList.add("wxi-eye-slash");
+                } else {
+                    icon.classList.remove("wxi-eye-slash");
+                    icon.classList.add("wxi-eye");
+                }
+            }
+        }, 50);
     }
 
     clearFieldError(fieldName) {
