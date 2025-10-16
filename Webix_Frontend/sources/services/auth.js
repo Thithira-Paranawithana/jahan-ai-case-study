@@ -373,6 +373,50 @@ class AuthService {
         return tokens !== null && tokens.access !== null;
     }
 
+	/**
+	 * Fetch user profile from backend
+	 * @returns {Promise<Object>}
+	 */
+	async getProfile() {
+		console.log('Fetching user profile from backend...');
+		
+		try {
+			const response = await apiRequest(API_CONFIG.ENDPOINTS.PROFILE, {
+				method: 'GET'
+			});
+
+			if (response.success && response.data.success) {
+				// Transform backend response to frontend format
+				const user = transformUserFromBackend(response.data.user);
+				this.currentUser = user;
+				
+				// Update in storage
+				const storage = localStorage.getItem('currentUser') ? localStorage : sessionStorage;
+				storage.setItem('currentUser', JSON.stringify(user));
+				
+				console.log('Profile fetched successfully:', user);
+				
+				return { 
+					success: true, 
+					user: user 
+				};
+			} else {
+				console.warn('Failed to fetch profile:', response.data.error);
+				return { 
+					success: false, 
+					error: response.data.error || 'Failed to fetch profile' 
+				};
+			}
+		} catch (error) {
+			console.error('Get profile error:', error);
+			return { 
+				success: false, 
+				error: error.message || 'An error occurred while fetching profile' 
+			};
+		}
+	}
+
+
     // Placeholder methods (to be implemented in next steps)
     async updateProfile(userData) {
 		try {

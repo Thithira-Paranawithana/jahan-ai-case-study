@@ -69,6 +69,7 @@ export default class AccountProfile {
                             label: "Phone Number",
                             name: "countryCode",
                             labelWidth: 150,
+                            placeholder: "Country Code",
                             width: 300,
                             disabled: true,
                             id: "countryCodeField",
@@ -188,24 +189,56 @@ export default class AccountProfile {
     }
 
     async loadProfile() {
-        console.log('Loading user profile...');
+        console.log('Loading user profile from backend...');
         
-        const user = authService.getCurrentUser();
+        // Show loading state
+        const loadingMessage = webix.message({ type: "info", text: "Loading profile..." });
         
-        if (user) {
+        // Fetch from backend
+        const result = await authService.getProfile();
+        
+        webix.message.hide(loadingMessage);
+        
+        if (result.success) {
+            const user = result.user;
+            
             webix.$$("userInfoForm").setValues({
                 fullName: user.fullName || "",
                 country: user.country || "",
                 email: user.email || "",
-                countryCode: user.countryCode || "+1",
+                countryCode: user.countryCode || "",
                 phone: user.phone || "",
                 dateOfBirth: user.dateOfBirth || "",
                 gender: user.gender || "prefer_not_to_say"
             });
             
-            console.log('Profile loaded:', user);
+            console.log('Profile loaded from backend:', user);
+        } else {
+            // Fallback to localStorage if API fails
+            console.warn('Failed to load from backend, using cached data');
+            
+            const user = authService.getCurrentUser();
+            
+            if (user) {
+                webix.$$("userInfoForm").setValues({
+                    fullName: user.fullName || "",
+                    country: user.country || "",
+                    email: user.email || "",
+                    countryCode: user.countryCode || "+1",
+                    phone: user.phone || "",
+                    dateOfBirth: user.dateOfBirth || "",
+                    gender: user.gender || "prefer_not_to_say"
+                });
+            }
+            
+            webix.message({ 
+                type: "warning", 
+                text: "Using cached profile data",
+                expire: 2000
+            });
         }
     }
+    
 
     clearErrors() {
         webix.$$("fullNameError").setHTML("");
