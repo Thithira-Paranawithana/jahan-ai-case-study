@@ -380,6 +380,13 @@ export default class PrivacyView extends JetView {
                         label: "Password",
                         labelPosition: "top"
                     },
+                    {
+                        view: "template",
+                        id: "deletePasswordError",
+                        template: "",
+                        height: 0,
+                        borderless: true
+                    },
                     { height: 10 },
                     {
                         view: "text",
@@ -387,6 +394,13 @@ export default class PrivacyView extends JetView {
                         placeholder: "Type DELETE here",
                         label: "Confirmation",
                         labelPosition: "top"
+                    },
+                    {
+                        view: "template",
+                        id: "deleteConfirmError",
+                        template: "",
+                        height: 0,
+                        borderless: true
                     },
                     { height: 20 },
                     {
@@ -397,6 +411,7 @@ export default class PrivacyView extends JetView {
                                 value: "Cancel",
                                 width: 100,
                                 click: () => {
+                                    this.clearDeleteErrors();
                                     webix.$$("deleteWarning2").close();
                                 }
                             },
@@ -409,8 +424,12 @@ export default class PrivacyView extends JetView {
                                     const password = webix.$$("deletePasswordInput").getValue();
                                     const confirmation = webix.$$("deleteConfirmInput").getValue();
                                     
-                                    // Validation
+                                    // Clear previous errors
+                                    this.clearDeleteErrors();
+                                    
+                                    // Validate password
                                     if (!password) {
+                                        this.showDeleteError('deletePassword', 'Password is required');
                                         webix.message({ 
                                             type: "error", 
                                             text: "Please enter your password" 
@@ -418,7 +437,9 @@ export default class PrivacyView extends JetView {
                                         return;
                                     }
                                     
+                                    // Validate confirmation
                                     if (confirmation !== "DELETE") {
+                                        this.showDeleteError('deleteConfirm', 'You must type DELETE exactly');
                                         webix.message({ 
                                             type: "error", 
                                             text: "You must type DELETE to confirm" 
@@ -435,6 +456,56 @@ export default class PrivacyView extends JetView {
                 ]
             }
         }).show();
+    }
+    
+    clearDeleteErrors() {
+        // Clear error messages
+        if (webix.$$("deletePasswordError")) {
+            webix.$$("deletePasswordError").setHTML("");
+            webix.$$("deletePasswordError").config.height = 0;
+            webix.$$("deletePasswordError").resize();
+        }
+        
+        if (webix.$$("deleteConfirmError")) {
+            webix.$$("deleteConfirmError").setHTML("");
+            webix.$$("deleteConfirmError").config.height = 0;
+            webix.$$("deleteConfirmError").resize();
+        }
+        
+        // Reset input borders
+        if (webix.$$("deletePasswordInput")) {
+            webix.$$("deletePasswordInput").getNode().querySelector('input').style.border = '';
+        }
+        
+        if (webix.$$("deleteConfirmInput")) {
+            webix.$$("deleteConfirmInput").getNode().querySelector('input').style.border = '';
+        }
+    }
+    
+    showDeleteError(field, message) {
+        if (field === 'deletePassword') {
+            // Show error message
+            const errorTemplate = webix.$$("deletePasswordError");
+            errorTemplate.setHTML(`<span style="color: #e53e3e; font-size: 13px; margin-top: 4px;">${message}</span>`);
+            errorTemplate.config.height = 20;
+            errorTemplate.resize();
+            
+            // Red border on input
+            const inputNode = webix.$$("deletePasswordInput").getNode().querySelector('input');
+            inputNode.style.border = '2px solid #e53e3e';
+            inputNode.style.borderRadius = '4px';
+        } else if (field === 'deleteConfirm') {
+            // Show error message
+            const errorTemplate = webix.$$("deleteConfirmError");
+            errorTemplate.setHTML(`<span style="color: #e53e3e; font-size: 13px; margin-top: 4px;">${message}</span>`);
+            errorTemplate.config.height = 20;
+            errorTemplate.resize();
+            
+            // Red border on input
+            const inputNode = webix.$$("deleteConfirmInput").getNode().querySelector('input');
+            inputNode.style.border = '2px solid #e53e3e';
+            inputNode.style.borderRadius = '4px';
+        }
     }
     
     async deleteAccount(password, confirmation) {
@@ -458,14 +529,34 @@ export default class PrivacyView extends JetView {
             // Redirect to login after brief delay
             setTimeout(() => {
                 window.location.href = window.location.origin + window.location.pathname + '#!/login';
-                // window.location.reload();
             }, 2000);
         } else {
-            // Show specific error message
-            let errorMessage = "Failed to delete account";
+            // Re-open dialog to show errors
+            this.finalDeleteConfirmation();
             
-            if (result.errors) {
+            // Wait for dialog to render
+            setTimeout(() => {
+                // Restore values
+                webix.$$("deletePasswordInput").setValue(password);
+                webix.$$("deleteConfirmInput").setValue(confirmation);
+                
                 // Handle backend validation errors
+                if (result.errors) {
+                    if (result.errors.password) {
+                        this.showDeleteError('deletePassword', result.errors.password[0]);
+                    }
+                    if (result.errors.confirmation) {
+                        this.showDeleteError('deleteConfirm', result.errors.confirmation[0]);
+                    }
+                } else if (result.error) {
+                    // Generic error - show on password field
+                    this.showDeleteError('deletePassword', result.error);
+                }
+            }, 100);
+            
+            // Also show toast notification
+            let errorMessage = "Failed to delete account";
+            if (result.errors) {
                 if (result.errors.password) {
                     errorMessage = result.errors.password[0];
                 } else if (result.errors.confirmation) {
@@ -482,6 +573,7 @@ export default class PrivacyView extends JetView {
             });
         }
     }
+    
     
     
     
