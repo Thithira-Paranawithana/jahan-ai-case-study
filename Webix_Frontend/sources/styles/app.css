@@ -1,6 +1,4 @@
-/* CSS Custom Properties for Theming */
 :root {
-    /* Light Theme Colors */
     --bg-primary: #ffffff;
     --bg-secondary: #f5f5f5;
     --text-primary: #333333;
@@ -12,12 +10,10 @@
     --success-color: #4CAF50;
     --warning-color: #ff9800;
     
-    /* Default Font Settings */
     --base-font-size: 14px;
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Dark Theme */
 [data-theme="dark"] {
     --bg-primary: #1e1e1e;
     --bg-secondary: #2d2d2d;
@@ -28,7 +24,6 @@
     --accent-color: #66BB6A;
 }
 
-/* Font Sizes */
 [data-font-size="small"] {
     --base-font-size: 12px;
 }
@@ -45,7 +40,6 @@
     --base-font-size: 18px;
 }
 
-/* Font Families */
 [data-font-family="system"] {
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
@@ -62,7 +56,6 @@
     --font-family: "Courier New", Courier, monospace;
 }
 
-/* High Contrast Mode */
 [data-high-contrast="true"] {
     --bg-primary: #000000;
     --bg-secondary: #1a1a1a;
@@ -73,7 +66,6 @@
     --accent-color: #00ff00;
 }
 
-/* Global Styles with Theme Variables */
 body {
     font-family: var(--font-family);
     font-size: var(--base-font-size);
@@ -99,7 +91,7 @@ body {
 }
 
 .webix_view,
-.webix_el_box, /* A common container for form elements */
+.webix_el_box, 
 .webix_inp_static,
 .webix_el_text input,
 .webix_el_combo input,
@@ -109,11 +101,10 @@ body {
 .webix_list_item,
 .webix_item_tab,
 .webix_template {
-    font-family: var(--font-family) !important; /* Use !important here to ensure override */
-    font-size: var(--base-font-size) !important; /* Use !important here to ensure override */
+    font-family: var(--font-family) !important; 
+    font-size: var(--base-font-size) !important; 
 }
 
-/* We still need a base rule for background and color on the main view container */
 .webix_view {
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -123,7 +114,6 @@ body {
     color: var(--text-primary);
 }
 
-/* Primary Button Styling */
 .webix_primary .webix_button {
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
@@ -136,13 +126,11 @@ body {
     filter: brightness(90%); 
 }
 
-/* Focus indicators for accessibility */
 *:focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
 
-/* Notification Form Specific Styles */
 .notification-preferences-form {
     overflow: visible !important;
 }
@@ -208,7 +196,6 @@ body {
     }
 }
 
-/* Card Rows for Settings */
 .privacy-setting-row,
 .notification-setting-row {
     background: var(--bg-primary);
@@ -225,8 +212,6 @@ body {
 }
 
 
-
-/* Theme Settings */
 .theme-settings-form {
     overflow: visible !important;
 }
@@ -272,7 +257,6 @@ body {
     border-radius: 4px;
 }
 
-/* Comprehensive Dark Theme Webix Styling */
 .webix_form,
 .webix_el_box,
 .webix_scroll_cont {
@@ -408,9 +392,7 @@ body {
     color: var(--text-primary) !important;
 }
 
-/***********************************************/
 
-/* High Contrast Mode for Accessibility */
 body.high-contrast {
     --bg-primary: #000000;
     --bg-secondary: #1a1a1a;
@@ -423,7 +405,6 @@ body.high-contrast {
     color: var(--text-primary) !important; 
 }
 
-/* Base Webix view styling */
 body.high-contrast .webix_view {
     background-color: var(--bg-primary) !important;
     color: var(--text-primary) !important;
@@ -442,11 +423,10 @@ body.high-contrast .webix_inp_textarea textarea {
     padding: 2px !important; 
 }
 
-/* Buttons */
 body.high-contrast .webix_button {
     background-color: var(--bg-secondary) !important;
     color: var(--text-primary) !important;
-    border: 2px solid var(--border-color) !important; /* Clear border for buttons */
+    border: 2px solid var(--border-color) !important; 
     box-shadow: none !important; 
 }
 
@@ -462,12 +442,11 @@ body.high-contrast .webix_el_select select:focus {
     color: var(--primary-color) !important;
 }
 body.high-contrast .webix_button.webix_active {
-    background-color: #555555 !important; /*  darker when active/pressed */
+    background-color: #555555 !important; 
     border-color: var(--primary-color) !important;
 }
 
 
-/* Checkboxes and Radio buttons */
 body.high-contrast .webix_el_checkbox label,
 body.high-contrast .webix_el_radio label {
     color: var(--text-primary) !important;
@@ -479,15 +458,14 @@ body.high-contrast .webix_radio_v_label:before {
 }
 body.high-contrast .webix_checkbox_v_label.webix_checked:before,
 body.high-contrast .webix_radio_v_label.webix_checked:before {
-    background-color: var(--primary-color) !important; /* Checked state background */
+    background-color: var(--primary-color) !important; 
     border-color: var(--primary-color) !important;
 }
 body.high-contrast .webix_checkbox_v_label.webix_checked:after {
-    border-color: var(--text-primary) !important; /* Checkmark color */
+    border-color: var(--text-primary) !important; 
 }
 
 
-/* Switch (Toggle) component */
 body.high-contrast .webix_switch_label {
     color: var(--text-primary) !important;
 }
@@ -500,7 +478,7 @@ body.high-contrast .webix_switch_button .webix_switch_handle {
     border: 1px solid var(--border-color) !important;
 }
 body.high-contrast .webix_switch_button.webix_checked {
-    background-color: var(--primary-color) !important; /* Active state */
+    background-color: var(--primary-color) !important; 
     border-color: var(--primary-color) !important;
 }
 
@@ -514,7 +492,7 @@ body.high-contrast .webix_template h3,
 body.high-contrast .webix_template h4,
 body.high-contrast .webix_template p,
 body.high-contrast .webix_template span {
-    color: var(--text-primary) !important; /*  all text inside templates is white */
+    color: var(--text-primary) !important; 
 }
 body.high-contrast .privacy-setting-row,
 body.high-contrast .notification-setting-row {
@@ -561,14 +539,12 @@ body.high-contrast .webix_list_item:hover {
     border-left: 4px solid var(--primary-color) !important;
 }
 
-/* Delete Account Button */
 .delete-account-button button {
     background-color: #dc2626 !important;
     color: white !important;
 }
 
 
-/* --- Color Palette Styling --- */
 .color-palette-container {
     padding-top: 10px;
 }
@@ -576,7 +552,7 @@ body.high-contrast .webix_list_item:hover {
 .color-swatch {
     width: 32px;
     height: 32px;
-    border-radius: 50%; /* Makes it a circle */
+    border-radius: 50%; 
     cursor: pointer;
     margin: 0 auto;
     border: 3px solid transparent;

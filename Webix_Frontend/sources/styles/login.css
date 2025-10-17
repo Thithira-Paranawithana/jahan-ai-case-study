@@ -1,4 +1,3 @@
-/* Login Layout - Two Column Structure */
 .login_layout {
     height: 100vh;
     background: #f5f7fa;
@@ -12,6 +11,7 @@
     justify-content: center;
     padding: 60px;
 }
+
 
 .brand_section {
     max-width: 450px;
@@ -106,7 +106,6 @@
     margin-bottom: 6px;
 }
 
-/* Remember Me and Forgot Password  */
 .remember_forgot_wrapper {
     margin: 15px 0 !important;
 }
@@ -220,87 +219,7 @@
     text-decoration: underline;
 }
 
-/* Responsive Design for Login Page */
-@media (max-width: 1024px) {
-    .login_left_panel {
-        padding: 40px;
-    }
-    
-    .brand_content h3 {
-        font-size: 28px;
-    }
-    
-    .login_right_panel {
-        padding: 40px;
-    }
-}
 
-@media (max-width: 768px) {
-    .login_layout {
-        flex-direction: column !important;
-    }
-    
-    .login_left_panel {
-        display: none !important;
-    }
-    
-    .login_right_panel {
-        padding: 20px;
-        width: 100% !important;
-    }
-    
-    .login_header h1 {
-        font-size: 28px;
-    }
-    
-    #loginForm {
-        width: 100% !important;
-        max-width: 400px;
-    }
-}
-
-@media (max-width: 480px) {
-    .login_right_panel {
-        padding: 15px;
-    }
-    
-    .login_header h1 {
-        font-size: 24px;
-    }
-    
-    .login_header .subtitle {
-        font-size: 14px;
-    }
-    
-    #loginForm {
-        width: 100% !important;
-        max-width: 100%;
-    }
-    
-    .input_field .webix_inp_static {
-        font-size: 14px !important;
-    }
-    
-    .login_button {
-        height: 44px !important;
-        font-size: 15px !important;
-    }
-    
-    .remember_checkbox label,
-    .forgot-link {
-        font-size: 13px;
-    }
-}
-
-@media (min-width: 1440px) {
-    .brand_section {
-        max-width: 520px;
-    }
-    
-    #loginForm {
-        width: 460px;
-    }
-}
 
 /* Demo Credentials  */
 .demo_credentials {
@@ -319,4 +238,54 @@
 
 .demo_credentials strong {
     font-weight: 600;
+}
+
+
+/* --- Password Label with Icon --- */
+.label-with-icon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.password-toggle-icon {
+    cursor: pointer;
+    color: #a0aec0;
+    font-size: 18px;
+    transition: color 0.2s ease;
+}
+
+.password-toggle-icon:hover {
+    color: #4a5568;
+}
+
+
+/* --- Responsive Design for Login Page (Corrected) --- */
+
+/* For Tablets and smaller devices (e.g., screen width is 1024px or less) */
+@media (max-width: 1024px) {
+    .login_left_panel {
+        display: none !important; /* Hide the decorative left panel */
+    }
+
+    .login_right_panel {
+        width: 100% !important; /* Make the form panel take up the full screen width */
+    }
+
+    /* Center the form within the now full-width right panel */
+    #loginForm {
+        max-width: 450px;
+    }
+}
+
+/* For Mobile Phones (e.g., screen width is 480px or less) */
+@media (max-width: 480px) {
+    .login_right_panel {
+        padding: 20px 15px; /* Reduce padding for more space */
+    }
+
+    .login_header h1 {
+        font-size: 28px; /* Slightly smaller title */
+    }
 }

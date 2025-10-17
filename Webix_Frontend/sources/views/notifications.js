@@ -166,7 +166,7 @@ export default class NotificationsView extends JetView {
                                                         name: "frequency",
                                                         value: prefs.frequency || "instant",
                                                         options: [
-                                                            { id: "instant", value: "Instant (as they happen)" },
+                                                            { id: "instant", value: "Instant (as they happen)"},
                                                             { id: "daily", value: "Daily digest" },
                                                             { id: "never", value: "Never (pause all notifications)" }
                                                         ]
@@ -235,6 +235,7 @@ export default class NotificationsView extends JetView {
                                                                         view: "button",
                                                                         value: "Preview",
                                                                         width: 90,
+                                                                        tooltip: "Click to preview the tone",
                                                                         click: () => this.previewSound()
                                                                     },
                                                                     {}
