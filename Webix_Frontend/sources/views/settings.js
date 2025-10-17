@@ -44,5 +44,14 @@ export default class SettingsView extends JetView {
 		if (!authService.isAuthenticated()) {
 			this.show("/login");
 		}
+
+		this.$$("settingsTabbar").attachEvent("onChange", (newTab) => {
+			if (newTab === "account") {
+				const accountView = this.$$("account");
+				if (accountView && accountView.$scope && accountView.$scope.profileHelper) {
+					accountView.$scope.profileHelper.loadProfile();
+				}
+			}
+		});
 	}
 }

@@ -126,6 +126,7 @@ body {
     filter: brightness(90%); 
 }
 
+
 *:focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
@@ -542,6 +543,10 @@ body.high-contrast .webix_list_item:hover {
 .delete-account-button button {
     background-color: #dc2626 !important;
     color: white !important;
+}
+
+.delete-account-button:hover {
+    background: #c53030 !important;
 }
 
 
