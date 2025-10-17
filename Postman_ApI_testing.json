@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "b647e289-448d-4f26-8c05-01c2c3f73ee4",
+		"name": "Jahan_ai_case_study",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40585857",
+		"_collection_link": "https://warped-station-247348.postman.co/workspace/d3b8654b-33b6-498d-836b-a666114fc2c6/collection/40585857-b647e289-448d-4f26-8c05-01c2c3f73ee4?action=share&source=collection_link&creator=40585857"
+	},
+	"item": [
+		{
+			"name": "SignUp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"test@example.com\",\r\n  \"full_name\": \"Test User\",\r\n  \"password\": \"TestPass@123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/register/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"register",
+						""
+					]
+				},
+				"description": "Registers a new user account.\n\nEndpoint: POST /api/auth/register/\n\nRequest Body (JSON):\n- email (string, required): The user's email address. Must be unique.\n- full_name (string, required): The user's full name.\n- password (string, required): The user's password. Should meet security requirements (e.g., minimum length, special characters).\n\nReturns a success response with user details upon successful registration, or an error message if registration fails (e.g., email already exists, invalid input)."
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"test@example.com\",\r\n  \"password\": \"TestPass@123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/login/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"login",
+						""
+					]
+				},
+				"description": "This POST request serves as the login endpoint. It accepts a JSON body containing an email and password to authenticate a user. Upon successful authentication, it returns access credentials (access, refresh tokens) that can be used for authorized requests to protected endpoints."
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwNjA2ODAwLCJpYXQiOjE3NjA2MDMyMDAsImp0aSI6IjQ3OWQzNmNiZjQwMzQxYTdiOGYyMWU2MTFjODQ4NzM2IiwidXNlcl9pZCI6IjIifQ.BzFr0UGOi94UIDguY0BTsrB2n1CoJDkU6qKWmdMYXSk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTIwODAwMCwiaWF0IjoxNzYwNjAzMjAwLCJqdGkiOiI5MzFhNWZjMzk1MDk0NTdiYmE1ZTBlNTlhMjBkNDhhMSIsInVzZXJfaWQiOiIyIn0.3wB6T95j-5kcwdERT_JBoVahBnBV2bYgLqGBeqUkppw\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/logout/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"logout",
+						""
+					]
+				},
+				"description": "This endpoint logs out a user by invalidating the provided refresh token. Send a POST request with the user's refresh token in the request body to terminate the session and prevent further use of the token."
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserInformation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwNjA2OTM4LCJpYXQiOjE3NjA2MDMzMzgsImp0aSI6ImUyYWU4ZDAzMTJmNzQyYmM5Mzk2ZWE1OGRiNzA1ZGFkIiwidXNlcl9pZCI6IjIifQ.9PSKMV4Y3Pv2OHCnGy2al6k22ZwvCXK6K-vJkrONq-A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/profile/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"profile",
+						""
+					]
+				},
+				"description": "Retrieves the authenticated user's profile information. This GET request returns details such as full name, email, and other profile attributes for the currently logged-in user. Authentication is required; ensure a valid token is provided in the request headers. Use this endpoint to display or manage user-specific data in your application."
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUserProfile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwNjA2OTM4LCJpYXQiOjE3NjA2MDMzMzgsImp0aSI6ImUyYWU4ZDAzMTJmNzQyYmM5Mzk2ZWE1OGRiNzA1ZGFkIiwidXNlcl9pZCI6IjIifQ.9PSKMV4Y3Pv2OHCnGy2al6k22ZwvCXK6K-vJkrONq-A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"full_name\": \"Abc\",\r\n  \"country\": \"Sri Lanka\",\r\n  \"country_code\": \"+94\",\r\n  \"phone\": 89222333,\r\n  \"date_of_birth\": \"2000-05-15\",\r\n  \"gender\": \"male\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/profile/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"profile",
+						""
+					]
+				},
+				"description": "This endpoint allows updating the authenticated user's profile information. The following fields should be included in the request body as JSON:\n\n- full_name (string): The user's full name\n    \n- country (string or null): The user's country\n    \n- country_code (string or null): The country calling code\n    \n- phone (integer or null): The user's phone number\n    \n- date_of_birth (string or null, format YYYY-MM-DD): The user's date of birth\n    \n- gender (string or null): The user's gender"
+			},
+			"response": []
+		},
+		{
+			"name": "ChangePassword",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwNjA3NjA5LCJpYXQiOjE3NjA2MDQwMDksImp0aSI6IjRlOTQ3YmEzMzcwOTQ3M2Q5NGI0ODdiMzk1YWY4MzkzIiwidXNlcl9pZCI6IjIifQ.Qw8pCDiJ2RmqRVRDMBDk7GxjE7JBpBr-jBN7Z7TU5IQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"current_password\": \"TestPass@1234\",\r\n  \"new_password\": \"TestPass@123\",\r\n  \"confirm_password\": \"TestPass@123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/change-password/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"change-password",
+						""
+					]
+				},
+				"description": "This endpoint allows an authenticated user to change their password.\n\n**Request URL:**\nPOST http://127.0.0.1:8000/api/auth/change-password/\n\n**Request Body (JSON):**\n- `current_password` (string): The user's current password.\n- `new_password` (string): The new password to set.\n- `confirm_password` (string): Confirmation of the new password (must match `new_password`).\n\nAll fields are required. The request will fail if the current password is incorrect or if the new password isn't strong or the new password and confirmation do not match."
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteAccount",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwNjA4NzI5LCJpYXQiOjE3NjA2MDUxMjksImp0aSI6IjFiMDExNDU5NGYzZDRlZWNiY2JmNDcwNWU3NzdlMjI5IiwidXNlcl9pZCI6IjIifQ.eU7tk0MptyNFI4oH09ecAhNPORd2VA87vocBnMDzGo0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"password\": \"TestPass@123\",\r\n  \"confirmation\": \"DELETE\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/delete-account/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"delete-account",
+						""
+					]
+				},
+				"description": "**Delete Account**\n\nThis endpoint permanently deletes the authenticated user's account.\n\n**Request Body Parameters:**\n- `password` (string, required): The user's current password. This is required to confirm the user's identity before account deletion. Example: `\"TestPass@123\"`.\n- `confirmation` (string, required): Must be set to the exact value `\"DELETE\"` (case-sensitive) to confirm the deletion action.\n\n**Important Notes:**\n- Both parameters are required for the request to succeed.\n- The `confirmation` field acts as an extra safeguard to prevent accidental account deletion.\n- Ensure you have backed up any important data before proceeding, as this action is irreversible."
+			},
+			"response": []
+		}
+	]
+}
