@@ -4,6 +4,7 @@ import AccountProfile from "./account-profile";
 import AccountPassword from "./account-password";
 
 export default class AccountView extends JetView {
+    
     config() {
         this.profileHelper = new AccountProfile();
         this.passwordHelper = new AccountPassword();

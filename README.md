@@ -23,12 +23,11 @@ A full-stack web application for managing user preferences, built with Django RE
 - SQLite database
 
 **Frontend:**
-- Webix Jet 
+- Webix  
 - JavaScript 
 
 **Testing:**
 - Jest 
-- Babel Jest
 
 ## Project Structure Overview
 

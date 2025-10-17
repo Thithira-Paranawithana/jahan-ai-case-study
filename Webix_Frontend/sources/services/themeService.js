@@ -2,14 +2,12 @@
 class ThemeService {
     constructor() {
         this.currentTheme = this.loadTheme();
-        //  theme is applied on initial load
         this.applyTheme(); 
     }
 
     loadTheme() {
         const savedTheme = localStorage.getItem("userTheme");
         if (savedTheme) {
-            // Ensure old saved themes get the new property
             const theme = JSON.parse(savedTheme);
             return {
                 ...this.getDefaults(),
@@ -109,6 +107,8 @@ class ThemeService {
     setPrimaryColor(color) {
         this.applyTheme({ ...this.currentTheme, primaryColor: color });
         this.saveTheme({ primaryColor: color });
+        window.dispatchEvent(new Event('themeChanged'));
+
     }
 
     resetTheme() {
@@ -117,6 +117,8 @@ class ThemeService {
         localStorage.removeItem("userTheme");
         this.currentTheme = defaultTheme;
         this.applyTheme(defaultTheme);
+        window.dispatchEvent(new Event('themeChanged'));
+
         return defaultTheme;
     }
 
