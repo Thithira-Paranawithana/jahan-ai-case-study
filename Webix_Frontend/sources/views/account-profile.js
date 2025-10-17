@@ -192,12 +192,12 @@ export default class AccountProfile {
         console.log('Loading user profile from backend...');
         
         // Show loading state
-        const loadingMessage = webix.message({ type: "info", text: "Loading profile..." });
+        // const loadingMessage = webix.message({ type: "info", text: "Loading profile..." });
         
         // Fetch from backend
         const result = await authService.getProfile();
         
-        webix.message.hide(loadingMessage);
+        // webix.message.hide(loadingMessage);
         
         if (result.success) {
             const user = result.user;
