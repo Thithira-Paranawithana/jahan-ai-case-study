@@ -30,6 +30,7 @@ export default class LoginView extends JetView {
                     labelPosition: "top", 
                     placeholder: "your@email.com",
                     css: "input_field",
+					value: "john@example.com",
                     on: {
                         onChange: () => this.clearFieldError('email')
                     }
@@ -55,6 +56,7 @@ export default class LoginView extends JetView {
                     labelPosition: "top", 
                     placeholder: "Enter your password",
                     css: "input_field",
+					value: "Password@123",
                     on: {
                         onChange: () => this.clearFieldError('password')
                     }
@@ -114,7 +116,7 @@ export default class LoginView extends JetView {
                 <div class="brand_section">
                     <div class="brand_logo">
                         <span class="logo_icon">⚙️</span>
-                        <h1>USER PREFERENCES</h1>
+                        <h1>User Preferences</h1>
                     </div>
                     <div class="brand_content">
                         <h3>Customize Your Experience</h3>
@@ -126,11 +128,28 @@ export default class LoginView extends JetView {
                             <li>✓ Advanced privacy options</li>
                         </ul>
                     </div>
-                    <div class="demo_credentials">
-                        <h4><strong>Demo Credentials:</strong></h4>
-                        <h4>Email: john@example.com</h4>
-                        <h4>Password: Password@123</h4>
-                    </div>
+					
+					
+                   <div class="testimonial_section">
+						<div class="testimonial active">
+							<div class="quote">"The best preference management system I've used. Simple and powerful."</div>
+							<div class="author">- Sarah Johnson</div>
+						</div>
+						<div class="testimonial">
+							<div class="quote">"Intuitive interface with all the customization options I need."</div>
+							<div class="author">- Michael Chen</div>
+						</div>
+						<div class="testimonial">
+							<div class="quote">"Great control over privacy settings. Highly recommended!"</div>
+							<div class="author">- Emma Wilson</div>
+						</div>
+						<div class="dots">
+							<span class="dot active"></span>
+							<span class="dot"></span>
+							<span class="dot"></span>
+						</div>
+					</div>
+
                 </div>
             `
         };
@@ -172,7 +191,6 @@ export default class LoginView extends JetView {
             return;
         }
 
-        // Attach password toggle event listener
         this.attachPasswordToggle();
         
         setTimeout(() => {
@@ -180,17 +198,48 @@ export default class LoginView extends JetView {
                 this.$$("loginEmailField").focus();
             }
         }, 100);
+
+		this.startTestimonialRotation();		
+
     }
 
+	destructor() {
+		if (this.testimonialInterval) {
+			clearInterval(this.testimonialInterval);
+		}
+		super.destructor();
+	}
+	
+	
+	startTestimonialRotation() {
+		setTimeout(() => {
+			const testimonials = this.getRoot().$view.querySelectorAll('.testimonial');
+			const dots = this.getRoot().$view.querySelectorAll('.dot');
+			
+			if (!testimonials.length || !dots.length) return;
+			
+			let currentIndex = 0;
+			
+			this.testimonialInterval = setInterval(() => {
+				testimonials[currentIndex].classList.remove('active');
+				dots[currentIndex].classList.remove('active');
+				
+				currentIndex = (currentIndex + 1) % testimonials.length;
+				
+				testimonials[currentIndex].classList.add('active');
+				dots[currentIndex].classList.add('active');
+			}, 3000);
+		}, 200);
+	}
+
+	
+
     attachPasswordToggle() {
-        // Use setTimeout to ensure DOM is ready
         setTimeout(() => {
             const icon = this.getRoot().$view.querySelector(".password-toggle-icon");
             if (icon) {
-                // Remove old listener if exists
                 icon.replaceWith(icon.cloneNode(true));
                 
-                // Get the new node and attach listener
                 const newIcon = this.getRoot().$view.querySelector(".password-toggle-icon");
                 newIcon.addEventListener("click", () => {
                     this.togglePasswordVisibility();
@@ -214,10 +263,8 @@ export default class LoginView extends JetView {
         
         field.refresh();
         
-        // Re-attach event listener after refresh (since DOM is rebuilt)
         this.attachPasswordToggle();
         
-        // Update icon class
         setTimeout(() => {
             const icon = this.getRoot().$view.querySelector(".password-toggle-icon");
             if (icon) {
